@@ -27,15 +27,15 @@
 
             <div class="form-group">
                 <label class="reg__label">Name</label>
-                <input name="name" type="text" class="reg__input form-control">
+                <input name="name" type="text" class="reg__input form-control" value="1">
             </div>
             <div class="form-group">
                 <label class="reg__label">Phone</label>
-                <input name="telephone" type="text" class="reg__input form-control">
+                <input name="telephone" type="text" class="reg__input form-control" value="1">
             </div>
             <div class="form-group">
                 <label class="reg__label">E-mail</label>
-                <input name="email" type="text" class="reg__input form-control">
+                <input name="email" type="text" class="reg__input form-control" value="1">
             </div>
 
             <div class="submit">
@@ -66,27 +66,38 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    var formData = new FormData();
-                    formData.append("card", document.getElementById("card").files[0]);
-                    formData.append("name", $("input[name='name']").val());
-                    formData.append("telephone", $("input[name='telephone']").val());
-                    formData.append("email", $("input[name='email']").val());
+                    var formData = {};
+                    if($("input[name='name']").val()){
+                        formData["name"] = $("input[name='name']").val();
+                    }
+                    if($("input[name='telephone']").val()){
+                        formData["telephone"] = $("input[name='telephone']").val();
+                    }
+                    if($("input[name='email']").val()){
+                        formData["email"] = $("input[name='email']").val();
+                    }
+                    // formData.append("card", document.getElementById("card").files[0]);
+                    // formData.append("name", $("input[name='name']").val());
+                    // formData.append("telephone", $("input[name='telephone']").val());
+                    // formData.append("email", $("input[name='email']").val());
                     $.ajax({
                         type: 'POST',
                         url: '/register',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
+                        data: $("#ajax_form").serialize(),
+                        dataType: "json",
                         success:function(data){
                             if(data.code == 200){
                                 window.location.reload();
                             }
                             else{
-                                sweetAlert("", data.message, "error");
+                                data = eval("(" + data + ")")
+                                sweetAlert("", data[0].name, "error");
                             }
                         },
-                        error:function(){
+                        error:function(XMLHttpRequest){
                             //请求出错处理
+                            var result = eval("(" + XMLHttpRequest.responseText + ")")
+                            sweetAlert("", result[0].name, "error");
                         }
                     });
                 });

@@ -82,7 +82,7 @@
                     formData.append("event_name", $("input[name='event_name']").val());
                     $.ajax({
                         type: 'POST',
-                        url: '',
+                        url: '/login',
                         data: formData,
                         contentType: false,
                         processData: false,
@@ -101,59 +101,6 @@
                 });
             return false;
         });
-    });
-
-    $('#card').on('change', function (e) {
-        $('.card__img').attr('src', '');
-        var file = e.target.files[0];
-
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-
-        reader.onload = function (e) {
-            swal({
-                title: "",
-                text: "Business card recognition",
-                showConfirmButton: false
-            });
-
-            $('.card__img').attr('src', e.target.result);
-            var formData = new FormData();
-            formData.append("appid", "<?= \Yii::$app->params['tencent']['appid']?>");
-            formData.append("image", document.getElementById("card").files[0]);
-            $.ajax({
-                type: 'POST',
-                url: "<?= \Yii::$app->params['tencent']['api_url']?>",
-                data: formData,
-                headers:{"authorization": "<?=$sign_str?>"},
-                contentType: false,
-                processData: false,
-                success:function(data){
-                    swal.close();
-                    if(data.result_list[0].code == 0){
-                        // window.location.reload();
-                        $.each(data.result_list[0].data, function(k, v){
-                            if(v.item == '姓名' || v.item == '英文姓名'){
-                                $("input[name='name']").val(v.value);
-                            }
-                            if(v.item == '手机' || v.item == '英文手机'){
-                                $("input[name='telephone']").val(v.value);
-                            }
-                            if(v.item == '邮箱' || v.item == '英文邮箱'){
-                                $("input[name='email']").val(v.value);
-                            }
-                        });
-                    }
-                    else{
-                        sweetAlert("", data.result_list[0].message, "error");
-                    }
-                },
-                error:function(){
-                    //请求出错处理
-                    swal.close();
-                }
-            });
-        };
     });
 
     $(".cancel").click(function(){
