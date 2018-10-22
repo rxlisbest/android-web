@@ -70,7 +70,7 @@ public class index extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         webView = (WebView) findViewById(R.id.webview);
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/add.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/login.html");
         webView = (WebView) findViewById(R.id.webview);
 
         WebSettings wSet = webView.getSettings();

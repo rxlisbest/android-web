@@ -83,18 +83,11 @@
                         data: $("#ajax_form").serialize(),
                         dataType: "json",
                         success:function(data){
-                            if(data.code == 200){
-                                window.location.reload();
-                            }
-                            else{
-                                data = eval("(" + data + ")")
-                                sweetAlert("", data[0].name, "error");
-                            }
+                            window.location.href = "/register.html";
                         },
                         error:function(XMLHttpRequest){
                             //请求出错处理
-                            var result = eval("(" + XMLHttpRequest.responseText + ")")
-                            sweetAlert("", result[0]["children"][3]["content"], "error");
+                            sweetAlert("", XMLHttpRequest.responseText, "error");
                         }
                     });
                 });
