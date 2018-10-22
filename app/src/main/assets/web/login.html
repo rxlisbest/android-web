@@ -77,25 +77,24 @@
                     closeOnConfirm: false
                 },
                 function(){
-                    var formData = new FormData();
-                    formData.append("name", $("input[name='name']").val());
-                    formData.append("event_name", $("input[name='event_name']").val());
                     $.ajax({
-                        type: 'POST',
-                        url: '/login',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
+                        type: 'GET',
+                        url: '/survey_question',
+                        data: $("#ajax_form").serialize(),
+                        dataType: "json",
                         success:function(data){
                             if(data.code == 200){
                                 window.location.reload();
                             }
                             else{
-                                sweetAlert("", data.message, "error");
+                                data = eval("(" + data + ")")
+                                sweetAlert("", data[0].name, "error");
                             }
                         },
-                        error:function(){
+                        error:function(XMLHttpRequest){
                             //请求出错处理
+                            var result = eval("(" + XMLHttpRequest.responseText + ")")
+                            sweetAlert("", result[0]["children"][3]["content"], "error");
                         }
                     });
                 });
