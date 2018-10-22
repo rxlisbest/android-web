@@ -1,0 +1,112 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+<!--    <meta name="viewport" content="width=device-width,initial-scale=1">-->
+    <meta name="viewport" content="width=device-width,inital-scale=1.0,user-scalable=no;">
+    <title>Customer Satisfaction Survey</title>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="/styles/main.css">
+    <script src="/scripts/vendor/modernizr.js"></script>
+    <style>
+        .box{
+            padding: 10px 20px;
+        }
+        .opt{
+            margin-top: 10px;
+        }
+        .magic-checkbox+label{
+            padding-top: 2.2px;
+        }
+        .submit{
+            text-align: center;
+        }
+        .submit .btn{
+            width: 120px;
+        }
+    </style>
+</head>
+<body>
+<img src="/images/header.png" class="header">
+
+<div class="container que">
+    <form id="ajax_form">
+        <div class="form-group">
+            <?php foreach($survey_question as $k => $v): ?>
+                <div class="box">
+                    <p><?=$v->content?></p>
+                    <!-- 多选题 -->
+                    <?php if($v->type == 2): ?>
+                        <?php foreach($v->option as $kk => $vv): ?>
+                            <div class="opt">
+                                <input name="answer[<?=$v->id?>][]" value="<?=$vv->id?>" class="magic-checkbox" type="checkbox" id="c8-<?=$vv->id?>">
+                                <label for="c8-<?=$vv->id?>">
+                                    <?=$vv->content?>
+                                    <?php if($vv->type == 2): ?>
+                                        : <input name="answer_text[<?=$v->id?>][<?=$vv->id?>]" type="text" >
+                                    <?php endif; ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    <!-- 简答题 -->
+                    <?php elseif($v->type == 3): ?>
+                        <?php $i = 0;?>
+                        <textarea name="answer[<?=$v->id?>][]" class="text" rows="5"></textarea>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+            <div class="submit">
+                <button class="btn btn-lg" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<img src="/images/footer.png" class="footer">
+
+<script src="/scripts/vendor.js"></script>
+
+<script src="/scripts/plugins.js"></script>
+
+<script src="/scripts/main.js"></script>
+<script src="/scripts/sweetalert.min.js"></script>
+<link rel="stylesheet" href="/styles/sweetalert.css">
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $("#ajax_form").submit(function () {
+            var _this = $(this);
+            swal({
+                    title: "",
+                    text: "Please confirm the information",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes",
+                    closeOnConfirm: false
+                },
+                function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '',
+                        data: _this.serialize(),
+                        success:function(data){
+                            if(data.code == 200){
+                                window.location.reload();
+                            }
+                            else{
+                                sweetAlert("", data.message, "error");
+                            }
+                        },
+                        error:function(){
+                            //请求出错处理
+                        }
+                    });
+                });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

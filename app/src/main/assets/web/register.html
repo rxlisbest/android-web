@@ -1,0 +1,99 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Customer Satisfaction Survey</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <script src="/scripts/vendor/modernizr.js"></script>
+    <script src="/scripts/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="/styles/sweetalert.css">
+</head>
+<body>
+<img src="/images/header.png" class="header">
+
+<div class="container">
+    <form id="ajax_form">
+        <div class="box reg">
+            <label for="card" class="card">
+                <input type="file" name="card" id="card" accept="image/*" class="card__file" id="card" type>
+                <img src="" width="100%" height="100%" class="card__img">
+            </label>
+
+            <div class="form-group">
+                <label class="reg__label">Name</label>
+                <input name="name" type="text" class="reg__input form-control">
+            </div>
+            <div class="form-group">
+                <label class="reg__label">Phone</label>
+                <input name="telephone" type="text" class="reg__input form-control">
+            </div>
+            <div class="form-group">
+                <label class="reg__label">E-mail</label>
+                <input name="email" type="text" class="reg__input form-control">
+            </div>
+
+            <div class="submit">
+                <a href="" class="btn btn-sm cancel" type="button">Sign out</a>
+                <button class="btn btn-sm pull-right" type="submit">Next</button>
+            </div>
+            <img src="/images/footer2.png" class="footer2">
+        </div>
+    </form>
+</div>
+
+<script src="/scripts/vendor.js"></script>
+
+<script src="/scripts/plugins.js"></script>
+
+<script src="/scripts/main.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $("#ajax_form").submit(function () {
+            swal({
+                    title: "",
+                    text: "Please confirm the information",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes",
+                    closeOnConfirm: false
+                },
+                function(){
+                    var formData = new FormData();
+                    formData.append("card", document.getElementById("card").files[0]);
+                    formData.append("name", $("input[name='name']").val());
+                    formData.append("telephone", $("input[name='telephone']").val());
+                    formData.append("email", $("input[name='email']").val());
+                    $.ajax({
+                        type: 'POST',
+                        url: '/register',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success:function(data){
+                            if(data.code == 200){
+                                window.location.reload();
+                            }
+                            else{
+                                sweetAlert("", data.message, "error");
+                            }
+                        },
+                        error:function(){
+                            //请求出错处理
+                        }
+                    });
+                });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
+

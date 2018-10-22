@@ -1,0 +1,167 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Customer Satisfaction Survey</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <script src="/scripts/vendor/modernizr.js"></script>
+    <script src="/scripts/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="/styles/sweetalert.css">
+    <style>
+        .login-title{
+            color: #005bac;
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold;
+            padding: 15% 20% 5% 20%;
+        }
+        /*.submit .btn{*/
+            /*width: 35%;*/
+        /*}*/
+        .submit{
+            padding-top: 12%;
+            padding-bottom: 20%;
+        }
+    </style>
+</head>
+<body>
+<img src="/images/header.png" class="header">
+
+<div class="container">
+    <form id="ajax_form">
+        <div class="box reg">
+            <div class="login-title">
+                &nbsp;
+            </div>
+
+            <div class="form-group">
+                <label class="reg__label">Employee*</label>
+                <input name="name" type="text" class="reg__input form-control">
+            </div>
+            <div class="form-group">
+                <label class="reg__label">Event*</label>
+                <input name="event_name" type="text" class="reg__input form-control">
+            </div>
+
+            <div class="submit">
+                <button class="btn btn-sm cancel" type="button">Cancel</button>
+                <button class="btn btn-sm pull-right" type="submit">Next</button>
+            </div>
+            <img src="/images/footer2.png" class="footer2">
+        </div>
+    </form>
+</div>
+
+<script src="/scripts/vendor.js"></script>
+
+<script src="/scripts/plugins.js"></script>
+
+<script src="/scripts/main.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $("#ajax_form").submit(function () {
+            swal({
+                    title: "",
+                    text: "Please confirm the information",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes",
+                    closeOnConfirm: false
+                },
+                function(){
+                    var formData = new FormData();
+                    formData.append("name", $("input[name='name']").val());
+                    formData.append("event_name", $("input[name='event_name']").val());
+                    $.ajax({
+                        type: 'POST',
+                        url: '',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success:function(data){
+                            if(data.code == 200){
+                                window.location.reload();
+                            }
+                            else{
+                                sweetAlert("", data.message, "error");
+                            }
+                        },
+                        error:function(){
+                            //请求出错处理
+                        }
+                    });
+                });
+            return false;
+        });
+    });
+
+    $('#card').on('change', function (e) {
+        $('.card__img').attr('src', '');
+        var file = e.target.files[0];
+
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function (e) {
+            swal({
+                title: "",
+                text: "Business card recognition",
+                showConfirmButton: false
+            });
+
+            $('.card__img').attr('src', e.target.result);
+            var formData = new FormData();
+            formData.append("appid", "<?= \Yii::$app->params['tencent']['appid']?>");
+            formData.append("image", document.getElementById("card").files[0]);
+            $.ajax({
+                type: 'POST',
+                url: "<?= \Yii::$app->params['tencent']['api_url']?>",
+                data: formData,
+                headers:{"authorization": "<?=$sign_str?>"},
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    swal.close();
+                    if(data.result_list[0].code == 0){
+                        // window.location.reload();
+                        $.each(data.result_list[0].data, function(k, v){
+                            if(v.item == '姓名' || v.item == '英文姓名'){
+                                $("input[name='name']").val(v.value);
+                            }
+                            if(v.item == '手机' || v.item == '英文手机'){
+                                $("input[name='telephone']").val(v.value);
+                            }
+                            if(v.item == '邮箱' || v.item == '英文邮箱'){
+                                $("input[name='email']").val(v.value);
+                            }
+                        });
+                    }
+                    else{
+                        sweetAlert("", data.result_list[0].message, "error");
+                    }
+                },
+                error:function(){
+                    //请求出错处理
+                    swal.close();
+                }
+            });
+        };
+    });
+
+    $(".cancel").click(function(){
+        $("input").each(function () {
+            $(this).val('');
+        });
+    });
+</script>
+</body>
+</html>
+
