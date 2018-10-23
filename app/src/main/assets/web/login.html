@@ -66,6 +66,9 @@
 
 <script type="text/javascript" charset="utf-8">
     $(function () {
+        if(window.localStorage.getItem("employee_id")){
+            window.location.href = "/register.html";
+        }
         $("#ajax_form").submit(function () {
             swal({
                     title: "",
@@ -78,11 +81,12 @@
                 },
                 function(){
                     $.ajax({
-                        type: 'GET',
-                        url: '/survey_question',
+                        type: 'POST',
+                        url: '/login',
                         data: $("#ajax_form").serialize(),
                         dataType: "json",
                         success:function(data){
+                            window.localStorage.setItem("employee_id", data.employee_id);
                             window.location.href = "/register.html";
                         },
                         error:function(XMLHttpRequest){

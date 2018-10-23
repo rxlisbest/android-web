@@ -2,7 +2,6 @@ package net.ruixinglong.www.chnt2.handler;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.yanzhenjie.andserver.RequestHandler;
@@ -17,19 +16,17 @@ import org.apache.httpcore.HttpRequest;
 import org.apache.httpcore.HttpResponse;
 import org.apache.httpcore.entity.StringEntity;
 import org.apache.httpcore.protocol.HttpContext;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.Map;
 
-public class RegisterHandler implements RequestHandler {
+public class SurveyLogHandler implements RequestHandler {
 
     private Context context;
 
-    public RegisterHandler(Context context) {
+    public SurveyLogHandler(Context context) {
         this.context = context;
     }
 
@@ -39,21 +36,14 @@ public class RegisterHandler implements RequestHandler {
         Map<String, String> params = HttpRequestParser.parseParams(request);
 
         if (!params.containsKey("name") || params.get("name").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The Name cannot be empty", "utf-8");
+            StringEntity stringEntity = new StringEntity("The content cannot be empty", "utf-8");
 
             response.setStatusCode(400);
             response.setEntity(stringEntity);
             return;
         }
-        if (!params.containsKey("telephone") || params.get("telephone").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The Phone cannot be empty", "utf-8");
-
-            response.setStatusCode(400);
-            response.setEntity(stringEntity);
-            return;
-        }
-        if (!params.containsKey("email") || params.get("email").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The E-mail cannot be empty", "utf-8");
+        if (!params.containsKey("event_name") || params.get("event_name").length() == 0) {
+            StringEntity stringEntity = new StringEntity("The content cannot be empty", "utf-8");
 
             response.setStatusCode(400);
             response.setEntity(stringEntity);
@@ -63,22 +53,15 @@ public class RegisterHandler implements RequestHandler {
         DBHelper dbHelper = new DBHelper(this.context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues user = new ContentValues();
-        user.put("name", params.get("name"));
-        user.put("telephone", params.get("telephone"));
-        user.put("email", params.get("email"));
-        long rowid1 = db.insert("user", null, user);//返回新添记录的行号，与主键id无关
+        ContentValues employee = new ContentValues();
+        employee.put("name", params.get("name"));
+        employee.put("event_name", params.get("event_name"));
+        long rowid = db.insert("employee", null, employee);//返回新添记录的行号，与主键id无关
 
-
-        ContentValues employee_user = new ContentValues();
-        employee_user.put("user_id", rowid1);
-        employee_user.put("employee_id", params.get("employee_id"));
-        long rowid2 = db.insert("user", null, user);//返回新添记录的行号，与主键id无关
-
-        if (rowid1 > 0 && rowid2 > 0) {
+        if (rowid > 0) {
             JSONObject resultSet = new JSONObject();
             try {
-                resultSet.put("user_id", rowid1);
+                resultSet.put("employee_id", rowid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

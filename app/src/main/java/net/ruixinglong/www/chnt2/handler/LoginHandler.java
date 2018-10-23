@@ -64,7 +64,7 @@ public class LoginHandler implements RequestHandler {
         if (rowid > 0) {
             JSONObject resultSet = new JSONObject();
             try {
-                resultSet.put("id", rowid);
+                resultSet.put("employee_id", rowid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

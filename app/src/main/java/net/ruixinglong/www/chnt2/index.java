@@ -80,6 +80,8 @@ public class index extends AppCompatActivity {
         webView.loadUrl(url);
         //开启JavaScript的功能
         wSet.setJavaScriptEnabled(true);
+        // 开启本地存储
+        wSet.setDomStorageEnabled(true);
         //开启缓存，无网络时加载本地内容
         wSet.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //关闭打开第三方浏览器
