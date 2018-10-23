@@ -32,6 +32,7 @@
 
 <div class="container que">
     <form id="ajax_form">
+        <input name="user_id" type="hidden">
         <div class="form-group" id="box">
             <div class="box" v-for="(v, k) in question">
                 <p>{{v.content}}</p>
@@ -77,6 +78,7 @@
 
 <script type="text/javascript" charset="utf-8">
     $(function () {
+        $("input[name='user_id']").val(window.localStorage.getItem("user_id"));
         var app = new Vue({
             el: '#box',
             data: {
@@ -114,7 +116,7 @@
                 function(){
                     $.ajax({
                         type: 'POST',
-                        url: '',
+                        url: '/survey_log',
                         data: _this.serialize(),
                         success:function(data){
                             if(data.code == 200){
@@ -124,8 +126,9 @@
                                 sweetAlert("", data.message, "error");
                             }
                         },
-                        error:function(){
+                        error:function(XMLHttpRequest){
                             //请求出错处理
+                            sweetAlert("", XMLHttpRequest.responseText, "error");
                         }
                     });
                 });

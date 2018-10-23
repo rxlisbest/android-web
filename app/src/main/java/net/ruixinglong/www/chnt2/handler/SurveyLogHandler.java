@@ -19,7 +19,9 @@ import org.apache.httpcore.protocol.HttpContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 public class SurveyLogHandler implements RequestHandler {
@@ -33,22 +35,29 @@ public class SurveyLogHandler implements RequestHandler {
     @RequestMapping(method = {RequestMethod.POST})
     @Override
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
+
         Map<String, String> params = HttpRequestParser.parseParams(request);
-
-        if (!params.containsKey("name") || params.get("name").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The content cannot be empty", "utf-8");
+        if (true) {
+            response.setStatusCode(400);
+            StringEntity stringEntity = new StringEntity("", "utf-8");
+            response.setEntity(stringEntity);
+            return;
+        }
+        if (!params.containsKey("user_id") || params.get("user_id").length() == 0) {
+            StringEntity stringEntity = new StringEntity("The user id cannot be empty", "utf-8");
 
             response.setStatusCode(400);
             response.setEntity(stringEntity);
             return;
         }
-        if (!params.containsKey("event_name") || params.get("event_name").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The content cannot be empty", "utf-8");
+        if (!params.containsKey("answer") || params.get("answer[1][]").length() == 0) {
+            StringEntity stringEntity = new StringEntity("The answer cannot be empty", "utf-8");
 
             response.setStatusCode(400);
             response.setEntity(stringEntity);
             return;
         }
+
 
         DBHelper dbHelper = new DBHelper(this.context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();

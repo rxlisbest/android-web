@@ -24,6 +24,7 @@ import com.yanzhenjie.andserver.Server;
 import com.yanzhenjie.andserver.filter.HttpCacheFilter;
 
 import net.ruixinglong.www.chnt2.handler.LoginHandler;
+import net.ruixinglong.www.chnt2.handler.SurveyLogHandler;
 import net.ruixinglong.www.chnt2.handler.SurveyQuestionHandler;
 import net.ruixinglong.www.chnt2.helper.DBHelper;
 import net.ruixinglong.www.chnt2.util.NetUtils;
@@ -57,6 +58,7 @@ public class index extends AppCompatActivity {
                 .registerHandler("/register", new RegisterHandler(this))
                 .registerHandler("/login", new LoginHandler(this))
                 .registerHandler("/survey_question", new SurveyQuestionHandler(this))
+                .registerHandler("/survey_log", new SurveyLogHandler(this))
                 .filter(new HttpCacheFilter())
                 .listener(mListener)
                 .build();
