@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="description" content="">
-<!--    <meta name="viewport" content="width=device-width,initial-scale=1">-->
+    <!--    <meta name="viewport" content="width=device-width,initial-scale=1">-->
     <meta name="viewport" content="width=device-width,inital-scale=1.0,user-scalable=no;">
     <title>Customer Satisfaction Survey</title>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -25,6 +25,8 @@
         .submit .btn{
             width: 120px;
         }
+
+
     </style>
 </head>
 <body>
@@ -40,14 +42,14 @@
                 <template v-if="v.type == 2">
                     <template v-for="(vv, kk) in v.children">
                         <div class="opt">
-                            <input v-bind:name="'answer['+v.id+'][]'" v-bind:value="vv.id"
+                            <input v-bind:name="'answer.'+v.id+'.'+vv.id" v-bind:value="vv.id"
                                    class="magic-checkbox" type="checkbox"
                                    v-bind:id="'c8-'+vv.id">
                             <label v-bind:for="'c8-'+vv.id">
                                 {{vv.content}}
                                 <template v-if="vv.type == 2">
-                                    : <input v-bind:name="'answer_text['+v.id+']['+vv.id+']'"
-                                             type="text" >
+                                    : <input v-bind:name="'answer_text.'+v.id+'.'+vv.id"
+                                             type="text">
                                 </template>
                             </label>
                         </div>
@@ -55,7 +57,7 @@
                 </template>
                 <!-- 简答题 -->
                 <template v-if="v.type == 3">
-                    <textarea v-bind:name="'answer['+v.id+'][]'" class="text" rows="5"></textarea>
+                    <textarea v-bind:name="'answer.'+v.id+''" class="text" rows="5"></textarea>
                 </template>
             </div>
             <div class="submit">
@@ -102,6 +104,7 @@
             }
         });
         app.initSurveyQuestion();
+
         $("#ajax_form").submit(function () {
             var _this = $(this);
             swal({
@@ -119,12 +122,8 @@
                         url: '/survey_log',
                         data: _this.serialize(),
                         success:function(data){
-                            if(data.code == 200){
-                                window.location.reload();
-                            }
-                            else{
-                                sweetAlert("", data.message, "error");
-                            }
+                            window.localStorage.removeItem("user_id");
+                            window.location.href = "/register.html";
                         },
                         error:function(XMLHttpRequest){
                             //请求出错处理
@@ -135,6 +134,8 @@
             return false;
         });
     });
+
+
 </script>
 </body>
 </html>

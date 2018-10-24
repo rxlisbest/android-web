@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -207,7 +209,7 @@ public class index extends AppCompatActivity {
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
         Intent Photo = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         Intent chooserIntent = Intent.createChooser(Photo, "Image Chooser");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[]{captureIntent});
@@ -288,4 +290,30 @@ public class index extends AppCompatActivity {
         sendBroadcast(intent);
     }
 
+    /**
+     *创建菜单
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.index, menu); //通过getMenuInflater()
+        // 方法得到MenuInflater对象，再调用它的inflate()方法就可以给当前活动创建菜单了，第一个参数：用于指定我们通过哪一个资源文件来创建菜单；第二个参数：用于指定我们的菜单项将添加到哪一个Menu对象当中。
+        return true; // true：允许创建的菜单显示出来，false：创建的菜单将无法显示。
+    }
+
+    /**
+     *菜单的点击事件
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.id_export_item:
+                Toast.makeText(this, "你点击了 添加！", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
 }

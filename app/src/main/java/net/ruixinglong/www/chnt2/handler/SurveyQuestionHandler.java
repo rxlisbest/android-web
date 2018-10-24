@@ -65,7 +65,6 @@ public class SurveyQuestionHandler implements RequestHandler {
         }
     }
 
-
     private JSONArray cursor2json(Cursor cursor) {
         JSONArray resultSet = new JSONArray();
         cursor.moveToFirst();
