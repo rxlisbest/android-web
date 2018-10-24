@@ -1,6 +1,9 @@
 package net.ruixinglong.www.chnt2;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Environment;
@@ -49,6 +52,10 @@ public class index extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -154,6 +161,7 @@ public class index extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("WangJ", data.toString());
         if (requestCode == REQUEST_CODE) {
             // 经过上边(1)、(2)两个赋值操作，此处即可根据其值是否为空来决定采用哪种处理方法
             if (mUploadCallbackBelow != null) {
@@ -193,6 +201,7 @@ public class index extends AppCompatActivity {
                 + Environment.DIRECTORY_PICTURES + File.separator;
         String fileName = "IMG_" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
         imageUri = Uri.fromFile(new File(filePath + fileName));
+        Log.d("WangJ", fileName);
 
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -200,21 +209,20 @@ public class index extends AppCompatActivity {
 
 
         // 选择图片（不包括相机拍照）,则不用成功后发刷新图库的广播
-//        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//        i.addCategory(Intent.CATEGORY_OPENABLE);
-//        i.setType("image/*");
-//        startActivityForResult(Intent.createChooser(i, "Image Chooser"), REQUEST_CODE);
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("image/*");
+        startActivityForResult(Intent.createChooser(i, "Image Chooser"), REQUEST_CODE);
 
-        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-
-        Intent Photo = new Intent(Intent.ACTION_PICK,
-        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        Intent chooserIntent = Intent.createChooser(Photo, "Image Chooser");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[]{captureIntent});
-
-        startActivityForResult(chooserIntent, REQUEST_CODE);
+//        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//
+//        Intent Photo = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//        Intent chooserIntent = Intent.createChooser(Photo, "Image Chooser");
+//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[]{captureIntent});
+//
+//        startActivityForResult(chooserIntent, REQUEST_CODE);
     }
 
 
@@ -271,7 +279,15 @@ public class index extends AppCompatActivity {
                     }
                     mUploadCallbackAboveL.onReceiveValue(results);
                 } else {
-                    mUploadCallbackAboveL.onReceiveValue(null);
+                    Log.e("WangJ", "系统返回URI：没有" );
+//                    Uri contentUri1 = getImageContentUri(this, new File(imageUri.toString().replace
+//                            ("file://", "")));
+                    String test = "content://com.google.android.apps.photos.contentprovider/-1/1/content%3A%2F%2Fmedia%2Fexternal%2Fimages%2Fmedia%2F45/ORIGINAL/NONE/11787233";
+
+                    Log.e("WangJ", test );
+                    Uri test2 = Uri.parse(test);
+                    Log.e("WangJ",  test2.toString());
+                    mUploadCallbackAboveL.onReceiveValue(new Uri[]{test2});
                 }
             } else {
                 Log.e("WangJ", "自定义结果：" + imageUri.toString());
@@ -284,6 +300,7 @@ public class index extends AppCompatActivity {
     }
 
     private void updatePhotos() {
+        Log.e("WangJ", imageUri.toString());
         // 该广播即使多发（即选取照片成功时也发送）也没有关系，只是唤醒系统刷新媒体文件
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(imageUri);
@@ -316,4 +333,39 @@ public class index extends AppCompatActivity {
 
         return true;
     }
+
+
+    private Uri getImageContentUri(Context context, java.io.File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+
+        Log.e("WangJJ", "1");
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+        Log.e("WangJJ", "2");
+        if (cursor != null && cursor.moveToFirst()) {
+            Log.e("WangJJ", "3");
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+
+            Log.e("WangJJ", "4");
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            Log.e("WangJJ", "5");
+            if (imageFile.exists()) {
+                Log.e("WangJJ", "6");
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                Log.e("WangJJ", "7");
+                return null;
+            }
+        }
+    }
+
 }

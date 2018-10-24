@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "email varchar(255)," +
                 "create_time BIGINT(20)," +
                 "update_time BIGINT(20)," +
-                "card varchar(255))";
+                "card TEXT)";
         db.execSQL(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS survey_question(" +

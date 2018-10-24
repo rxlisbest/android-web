@@ -24,6 +24,7 @@
             <label for="card" class="card">
                 <input type="file" name="card" id="card" accept="image/*" class="card__file" id="card" type>
                 <img src="" width="100%" height="100%" class="card__img">
+                <input type="hidden" name="card_base64">
             </label>
 
             <div class="form-group">
@@ -117,6 +118,7 @@
 
         reader.onload = function (e) {
             $('.card__img').attr('src', e.target.result);
+            $("input[name='card_base64']").val(e.target.result);
         };
     });
 </script>
