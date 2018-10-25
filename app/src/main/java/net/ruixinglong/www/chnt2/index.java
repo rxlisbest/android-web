@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -28,15 +31,23 @@ import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
 import com.yanzhenjie.andserver.filter.HttpCacheFilter;
 
+import net.ruixinglong.www.chnt2.bean.SurveyLogBean;
 import net.ruixinglong.www.chnt2.handler.LoginHandler;
 import net.ruixinglong.www.chnt2.handler.SurveyLogHandler;
 import net.ruixinglong.www.chnt2.handler.SurveyQuestionHandler;
 import net.ruixinglong.www.chnt2.helper.DBHelper;
+import net.ruixinglong.www.chnt2.util.ExcelUtils;
 import net.ruixinglong.www.chnt2.util.NetUtils;
 import net.ruixinglong.www.chnt2.handler.RegisterHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -50,10 +61,14 @@ public class index extends AppCompatActivity {
     private Uri imageUri;
     private int REQUEST_CODE = 1234;
 
+    DBHelper dbHelper = new DBHelper(this);
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setNavigationBarColor(Color.parseColor ("#000000"));
         if (getSupportActionBar() != null){
-            getSupportActionBar().hide();
+            // getSupportActionBar().hide();
         }
 
         DBHelper dbHelper = new DBHelper(this);
@@ -320,12 +335,142 @@ public class index extends AppCompatActivity {
     /**
      *菜单的点击事件
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
             case R.id.id_export_item:
-                Toast.makeText(this, "你点击了 添加！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "正在导出EXECL数据", Toast.LENGTH_SHORT).show();
+                // 查看数据
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+                String searchQuery = "SELECT * FROM survey_log";
+                Cursor cursor = db.rawQuery(searchQuery, null);
+                JSONArray survey_log = cursor2json(cursor);
+
+                List<SurveyLogBean> list = new ArrayList<SurveyLogBean>();
+
+                for (int i = 0; i < survey_log.length(); i++) {
+                    try {
+                        JSONObject job = survey_log.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                        searchQuery = "SELECT * FROM user WHERE _id = " + job.get("user_id").toString();
+                        // Log.d("RoyExcel", searchQuery);
+                        cursor = db.rawQuery(searchQuery, null);
+                        JSONArray user = cursor2json(cursor);
+                        if(user.length() > 0){
+                            Log.d("RoyExcel", "1");
+                            SurveyLogBean row = new SurveyLogBean();
+                            row.setName(user.getJSONObject(0).get("name").toString());
+                            row.setPhone(user.getJSONObject(0).get("telephone").toString());
+                            row.setEmail(user.getJSONObject(0).get("email").toString());
+
+                            searchQuery = "SELECT * FROM survey_question_log WHERE survey_log_id " +
+                                    "= " + job.get("id") + " ORDER BY survey_question_id ASC";
+                            // Log.d("RoyExcel", searchQuery);
+                            cursor = db.rawQuery(searchQuery, null);
+                            JSONArray survey_question_log = cursor2json(cursor);
+
+                            for (int ii = 0; ii < survey_question_log.length(); ii++) {
+                                JSONObject job1 = survey_question_log.getJSONObject(ii); // 遍历 jsonarray
+                                List<String> option_text = new ArrayList<String>();
+                                JSONArray answer = new JSONArray(job1.get("answer")
+                                        .toString());
+                                    // 选择题
+                                    // 数组，把每一个对象转成 json 对象
+
+                                for (int iii = 0; iii < answer.length(); iii++) {
+                                    JSONObject job2 = answer.getJSONObject(iii);
+
+                                    // 简答题
+                                    if(job1.get("survey_question_id").toString().equals("9")){
+                                        Log.d("RoyJ", job2.get("text").toString());
+                                        option_text.add(job2.get("text").toString());
+                                    }
+                                    else{
+                                        searchQuery = "SELECT * FROM survey_question_option WHERE " +
+                                                "id " +
+                                                "= " + job2.get("id");
+                                        // Log.d("RoyExcel", searchQuery);
+                                        cursor = db.rawQuery(searchQuery, null);
+                                        JSONArray option = cursor2json(cursor);
+
+                                        if(option.length() > 0){
+                                            option_text.add(option.getJSONObject(0).get("content")
+                                                    .toString() + " " + job2.get("text"));
+                                        }
+                                    }
+                                }
+                                String a = String.join(";", option_text);
+                                switch(job1.get("survey_question_id").toString()){
+                                    case "1":
+                                        row.setOne(a);
+                                        break;
+                                    case "2":
+                                        row.setTwo(a);
+                                        break;
+                                    case "3":
+                                        row.setThree(a);
+                                        break;
+                                    case "4":
+                                        row.setFour(a);
+                                        break;
+                                    case "5":
+                                        row.setFive(a);
+                                        break;
+                                    case "6":
+                                        row.setSix(a);
+                                        break;
+                                    case "7":
+                                        row.setSeven(a);
+                                        break;
+                                    case "8":
+                                        row.setEight(a);
+                                        break;
+                                    case "9":
+                                        row.setNine(a);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            list.add(row);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                File tempPath = Environment.getExternalStorageDirectory();
+                //文件夹是否已经存在
+                if (!tempPath.exists()) {
+                    tempPath.mkdirs();
+                }
+                String fileName = tempPath + "/Download/customers_"+DateFormat.format
+                        ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA))+".xls";
+
+                searchQuery = "SELECT * FROM survey_question ORDER BY id ASC";
+                cursor = db.rawQuery(searchQuery, null);
+                JSONArray survey_question = cursor2json(cursor);
+                String[] title = {"姓名", "电话", "邮箱", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+                for (int i = 0; i < survey_question.length(); i++) {
+                    JSONObject j = null;
+                    try {
+                        j = survey_question.getJSONObject(i);
+                        title[i + 3] = j.get("content").toString();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d("RoyExcel", survey_question.toString());
+                Log.d("Roy", fileName);
+                ExcelUtils.initExcel(fileName, title);
+                ExcelUtils.writeObjListToExcel(list, fileName, this);
+                Toast.makeText(this, "导出成功", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -368,4 +513,28 @@ public class index extends AppCompatActivity {
         }
     }
 
+    private JSONArray cursor2json(Cursor cursor) {
+        org.json.JSONArray resultSet = new org.json.JSONArray();
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+            for (int i = 0; i < totalColumn; i++) {
+                if (cursor.getColumnName(i) != null) {
+                    try {
+                        if (cursor.getString(i) != null) {
+                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                        } else {
+                            rowObject.put(cursor.getColumnName(i), "");
+                        }
+                    } catch (Exception e) {
+                        // Log.d("TAG_NAME", e.getMessage());
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+        return resultSet;
+    }
 }

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.yanzhenjie.andserver.RequestHandler;
 import com.yanzhenjie.andserver.RequestMethod;
@@ -64,11 +65,22 @@ public class SurveyLogHandler implements RequestHandler {
                         + job.get("id");
                 cursor = db.rawQuery(searchQuery, null);
                 JSONArray children = cursor2json(cursor);
-                if (params.containsKey("answer." + resultSet.getJSONObject(i).get
-                        ("id"))) {
-                    if (params.get("answer." + resultSet.getJSONObject(i).get
+                if (resultSet.getJSONObject(i).get
+                        ("type").toString().equals("3")) {
+                    if (params.containsKey("answer." + resultSet.getJSONObject(i).get
+                            ("id")) && params.get("answer." + resultSet.getJSONObject(i).get
                             ("id")).length() != 0) {
                         do_count++;
+                    }
+                } else if (resultSet.getJSONObject(i).get("type").toString().equals("1")) {
+                    for (int ii = 0; ii < children.length(); ii++) {
+                        if (params.containsKey("answer." + resultSet.getJSONObject(i).get
+                                ("id")) && params.get("answer." + resultSet.getJSONObject(i).get
+                                ("id")).toString().equals(children.getJSONObject(ii).get
+                                ("id").toString())) {
+                            do_count++;
+                            break;
+                        }
                     }
                 } else {
                     for (int ii = 0; ii < children.length(); ii++) {
@@ -113,7 +125,7 @@ public class SurveyLogHandler implements RequestHandler {
 
                 JSONArray answer = new JSONArray();
                 if (resultSet.getJSONObject(i).get
-                        ("type").toString() == "3") {
+                        ("type").toString().equals("3")) {
                     if (params.get("answer." + resultSet.getJSONObject(i).get
                             ("id")).length() != 0) {
                         JSONObject answer_object = new JSONObject();
@@ -121,6 +133,52 @@ public class SurveyLogHandler implements RequestHandler {
                         answer_object.put("text", params.get("answer." + resultSet.getJSONObject(i).get
                                 ("id")));
                         answer.put(answer_object);
+                    }
+                } else if (resultSet.getJSONObject(i).get("type").toString().equals("1")) {
+                    for (int ii = 0; ii < children.length(); ii++) {
+                        if (params.get("answer." + resultSet.getJSONObject(i).get
+                                ("id")).toString().equals(children.getJSONObject(ii).get
+                                ("id").toString())) {
+                            JSONObject answer_object = new JSONObject();
+                            answer_object.put("id", children.getJSONObject(ii).get
+                                    ("id").toString());
+                            if (params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).length() > 0) {
+                                answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
+                            } else {
+                                answer_object.put("text", "");
+                            }
+
+                            answer.put(answer_object);
+
+                            JSONObject job2 = children.getJSONObject(ii); // 遍历 jsonarray
+                            // 数组，把每一个对象转成 json 对象
+                            // 获取子选项
+                            searchQuery = "SELECT * FROM survey_question_option WHERE parent_id = "
+                                    + job2.get("id");
+                            cursor = db.rawQuery(searchQuery, null);
+                            JSONArray children2 = cursor2json(cursor);
+
+
+                            for (int iii = 0; iii < children2.length(); iii++) {
+                                if (params.containsKey("answer." + resultSet.getJSONObject(i).get
+                                        ("id") + "." + children.getJSONObject(ii).get
+                                        ("id") + "." + children2.getJSONObject(iii).get
+                                        ("id"))) {
+
+                                    JSONObject answer_object2 = new JSONObject();
+                                    answer_object2.put("id", children2.getJSONObject(iii).get
+                                            ("id").toString());
+                                    if (params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")+ "." + children2.getJSONObject(iii).get
+                                            ("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")+ "." + children2.getJSONObject(iii).get
+                                            ("id")).length() > 0) {
+                                        answer_object2.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
+                                    } else {
+                                        answer_object2.put("text", "");
+                                    }
+                                    answer.put(answer_object2);
+                                }
+                            }
+                        }
                     }
                 } else {
                     for (int ii = 0; ii < children.length(); ii++) {
@@ -130,11 +188,10 @@ public class SurveyLogHandler implements RequestHandler {
                             JSONObject answer_object = new JSONObject();
                             answer_object.put("id", children.getJSONObject(ii).get
                                     ("id").toString());
-                            if(params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).length() > 0){
-                                 answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
-                            }
-                            else{
-                                 answer_object.put("text", "");
+                            if (params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).length() > 0) {
+                                answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
+                            } else {
+                                answer_object.put("text", "");
                             }
                             answer.put(answer_object);
                         }
