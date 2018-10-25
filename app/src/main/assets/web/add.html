@@ -55,6 +55,38 @@
                         </div>
                     </template>
                 </template>
+                <template v-if="v.type == 1">
+                    <template v-for="(vv, kk) in v.children">
+                        <div class="opt">
+                            <input v-bind:name="'answer.'+v.id" v-bind:value="vv.id"
+                                   class="magic-checkbox" type="radio"
+                                   v-bind:id="'c8-'+vv.id">
+                            <label v-bind:for="'c8-'+vv.id">
+                                {{vv.content}}
+                                <template v-if="vv.type == 2">
+                                    : <input v-bind:name="'answer_text.'+v.id+'.'+vv.id"
+                                             type="text">
+                                </template>
+                            </label>
+                            <template v-for="(vvv, kkk) in vv.children">
+                                <div class="" style="margin-left: 20px;margin-top: 10px;">
+                                    <input v-bind:name="'answer.'+v.id+'.'+vv.id+'.'+vvv.id"
+                                           v-bind:value="vvv.id"
+                                           class="magic-checkbox" type="checkbox"
+                                           v-bind:id="'c8-'+vvv.id">
+                                    <label v-bind:for="'c8-'+vvv.id">
+                                        {{vvv.content}}
+                                        <template v-if="vvv.type == 2">
+                                            : <input
+                                                v-bind:name="'answer_text.'+v.id+'.'+vv.id+'.'+vvv.id"
+                                                     type="text">
+                                        </template>
+                                    </label>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </template>
                 <!-- 简答题 -->
                 <template v-if="v.type == 3">
                     <textarea v-bind:name="'answer.'+v.id+''" class="text" rows="5"></textarea>

@@ -38,13 +38,13 @@ public class RegisterHandler implements RequestHandler {
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
         Map<String, String> params = HttpRequestParser.parseParams(request);
 
-        if (!params.containsKey("card_base64") || params.get("card_base64").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The Card cannot be empty", "utf-8");
-
-            response.setStatusCode(400);
-            response.setEntity(stringEntity);
-            return;
-        }
+//        if (!params.containsKey("card_base64") || params.get("card_base64").length() == 0) {
+//            StringEntity stringEntity = new StringEntity("The Card cannot be empty", "utf-8");
+//
+//            response.setStatusCode(400);
+//            response.setEntity(stringEntity);
+//            return;
+//        }
         if (!params.containsKey("name") || params.get("name").length() == 0) {
             StringEntity stringEntity = new StringEntity("The Name cannot be empty", "utf-8");
 
@@ -80,7 +80,7 @@ public class RegisterHandler implements RequestHandler {
         ContentValues employee_user = new ContentValues();
         employee_user.put("user_id", rowid1);
         employee_user.put("employee_id", params.get("employee_id"));
-        employee_user.put("card", params.get("card_base64"));
+//        employee_user.put("card", params.get("card_base64"));
         long rowid2 = db.insert("user", null, user);//返回新添记录的行号，与主键id无关
 
         if (rowid1 > 0 && rowid2 > 0) {

@@ -48,7 +48,21 @@ public class SurveyQuestionHandler implements RequestHandler {
                 searchQuery = "SELECT * FROM survey_question_option WHERE survey_question_id = "
                         + job.get("id");
                 cursor = db.rawQuery(searchQuery, null);
-                job.put("children", cursor2json(cursor));
+                JSONArray resultSet2 = cursor2json(cursor);
+
+                for(int ii=0; ii<resultSet2.length(); ii++){
+                    try {
+                        JSONObject job2 = resultSet2.getJSONObject(ii); // 遍历 jsonarray 数组，把每一个对象转成
+                        // json 对象
+                        searchQuery = "SELECT * FROM survey_question_option WHERE parent_id = "
+                                + job2.get("id");
+                        cursor = db.rawQuery(searchQuery, null);
+                        job2.put("children", cursor2json(cursor));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                job.put("children", resultSet2);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

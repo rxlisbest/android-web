@@ -112,8 +112,8 @@ public class SurveyLogHandler implements RequestHandler {
                 JSONArray children = cursor2json(cursor);
 
                 JSONArray answer = new JSONArray();
-                if (params.containsKey("answer." + resultSet.getJSONObject(i).get
-                        ("id"))) {
+                if (resultSet.getJSONObject(i).get
+                        ("type").toString() == "3") {
                     if (params.get("answer." + resultSet.getJSONObject(i).get
                             ("id")).length() != 0) {
                         JSONObject answer_object = new JSONObject();

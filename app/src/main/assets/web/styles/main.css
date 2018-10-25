@@ -5693,10 +5693,10 @@ p {
 }
 .card {
     width:70%;
-    height:130px;
-    border:3px solid #ccc;
+    height:80px;
+    // border:3px solid #ccc;
     /*margin-bottom:15px;*/
-    background:url(../images/Camera.png) no-repeat 50%;
+    // background:url(../images/Camera.png) no-repeat 50%;
     background-size:50px;
     margin: 5% 15%;
 }
