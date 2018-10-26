@@ -81,7 +81,7 @@ public class RegisterHandler implements RequestHandler {
         employee_user.put("user_id", rowid1);
         employee_user.put("employee_id", params.get("employee_id"));
 //        employee_user.put("card", params.get("card_base64"));
-        long rowid2 = db.insert("user", null, user);//返回新添记录的行号，与主键id无关
+        long rowid2 = db.insert("employee_user", null, employee_user);//返回新添记录的行号，与主键id无关
 
         if (rowid1 > 0 && rowid2 > 0) {
             JSONObject resultSet = new JSONObject();
