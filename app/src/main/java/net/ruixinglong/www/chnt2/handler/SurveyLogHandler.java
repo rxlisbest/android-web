@@ -98,6 +98,7 @@ public class SurveyLogHandler implements RequestHandler {
                 e.printStackTrace();
             }
         }
+        Log.d("RoyTest", resultSet.toString());
 
         if (resultSet.length() > do_count) {
             int undo_count = resultSet.length() - do_count;
@@ -118,10 +119,10 @@ public class SurveyLogHandler implements RequestHandler {
         for (int i = 0; i < resultSet.length(); i++) {
             try {
                 JSONObject job = resultSet.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                searchQuery = "SELECT * FROM survey_question_option WHERE survey_question_id = "
-                        + job.get("id");
-                cursor = db.rawQuery(searchQuery, null);
-                JSONArray children = cursor2json(cursor);
+//                searchQuery = "SELECT * FROM survey_question_option WHERE survey_question_id = "
+//                        + job.get("id");
+//                cursor = db.rawQuery(searchQuery, null);
+                JSONArray children = (JSONArray) job.get("children");
 
                 JSONArray answer = new JSONArray();
                 if (resultSet.getJSONObject(i).get

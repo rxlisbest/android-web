@@ -66,8 +66,8 @@ public class index extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().setNavigationBarColor(Color.parseColor ("#000000"));
-        if (getSupportActionBar() != null){
+        getWindow().setNavigationBarColor(Color.parseColor("#000000"));
+        if (getSupportActionBar() != null) {
             // getSupportActionBar().hide();
         }
 
@@ -243,8 +243,9 @@ public class index extends AppCompatActivity {
 
     /**
      * Android API < 21(Android 5.0)版本的回调处理
+     *
      * @param resultCode 选取文件或拍照的返回码
-     * @param data 选取文件或拍照的返回结果
+     * @param data       选取文件或拍照的返回结果
      */
     private void chooseBelow(int resultCode, Intent data) {
         Log.e("WangJ", "返回调用方法--chooseBelow");
@@ -274,8 +275,9 @@ public class index extends AppCompatActivity {
 
     /**
      * Android API >= 21(Android 5.0) 版本的回调处理
+     *
      * @param resultCode 选取文件或拍照的返回码
-     * @param data 选取文件或拍照的返回结果
+     * @param data       选取文件或拍照的返回结果
      */
     private void chooseAbove(int resultCode, Intent data) {
         Log.e("WangJ", "返回调用方法--chooseAbove");
@@ -294,14 +296,14 @@ public class index extends AppCompatActivity {
                     }
                     mUploadCallbackAboveL.onReceiveValue(results);
                 } else {
-                    Log.e("WangJ", "系统返回URI：没有" );
+                    Log.e("WangJ", "系统返回URI：没有");
 //                    Uri contentUri1 = getImageContentUri(this, new File(imageUri.toString().replace
 //                            ("file://", "")));
                     String test = "content://com.google.android.apps.photos.contentprovider/-1/1/content%3A%2F%2Fmedia%2Fexternal%2Fimages%2Fmedia%2F45/ORIGINAL/NONE/11787233";
 
-                    Log.e("WangJ", test );
+                    Log.e("WangJ", test);
                     Uri test2 = Uri.parse(test);
-                    Log.e("WangJ",  test2.toString());
+                    Log.e("WangJ", test2.toString());
                     mUploadCallbackAboveL.onReceiveValue(new Uri[]{test2});
                 }
             } else {
@@ -323,7 +325,7 @@ public class index extends AppCompatActivity {
     }
 
     /**
-     *创建菜单
+     * 创建菜单
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -333,13 +335,13 @@ public class index extends AppCompatActivity {
     }
 
     /**
-     *菜单的点击事件
+     * 菜单的点击事件
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.id_export_item:
                 Toast.makeText(this, "正在导出EXECL数据", Toast.LENGTH_SHORT).show();
                 // 查看数据
@@ -358,7 +360,7 @@ public class index extends AppCompatActivity {
                         // Log.d("RoyExcel", searchQuery);
                         cursor = db.rawQuery(searchQuery, null);
                         JSONArray user = cursor2json(cursor);
-                        if(user.length() > 0){
+                        if (user.length() > 0) {
                             Log.d("RoyExcel", "1");
                             SurveyLogBean row = new SurveyLogBean();
                             row.setName(user.getJSONObject(0).get("name").toString());
@@ -376,18 +378,17 @@ public class index extends AppCompatActivity {
                                 List<String> option_text = new ArrayList<String>();
                                 JSONArray answer = new JSONArray(job1.get("answer")
                                         .toString());
-                                    // 选择题
-                                    // 数组，把每一个对象转成 json 对象
+                                // 选择题
+                                // 数组，把每一个对象转成 json 对象
 
                                 for (int iii = 0; iii < answer.length(); iii++) {
                                     JSONObject job2 = answer.getJSONObject(iii);
 
                                     // 简答题
-                                    if(job1.get("survey_question_id").toString().equals("9")){
+                                    if (job1.get("survey_question_id").toString().equals("9")) {
                                         Log.d("RoyJ", job2.get("text").toString());
                                         option_text.add(job2.get("text").toString());
-                                    }
-                                    else{
+                                    } else {
                                         searchQuery = "SELECT * FROM survey_question_option WHERE " +
                                                 "id " +
                                                 "= " + job2.get("id");
@@ -395,14 +396,14 @@ public class index extends AppCompatActivity {
                                         cursor = db.rawQuery(searchQuery, null);
                                         JSONArray option = cursor2json(cursor);
 
-                                        if(option.length() > 0){
+                                        if (option.length() > 0) {
                                             option_text.add(option.getJSONObject(0).get("content")
                                                     .toString() + " " + job2.get("text"));
                                         }
                                     }
                                 }
                                 String a = String.join(";", option_text);
-                                switch(job1.get("survey_question_id").toString()){
+                                switch (job1.get("survey_question_id").toString()) {
                                     case "1":
                                         row.setOne(a);
                                         break;
@@ -449,8 +450,8 @@ public class index extends AppCompatActivity {
                 if (!tempPath.exists()) {
                     tempPath.mkdirs();
                 }
-                String fileName = tempPath + "/Download/customers_"+DateFormat.format
-                        ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA))+".xls";
+                String fileName = tempPath + "/Download/customers_" + DateFormat.format
+                        ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".xls";
 
                 searchQuery = "SELECT * FROM survey_question ORDER BY id ASC";
                 cursor = db.rawQuery(searchQuery, null);
@@ -486,9 +487,9 @@ public class index extends AppCompatActivity {
         Log.e("WangJJ", "1");
         Cursor cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Images.Media._ID },
+                new String[]{MediaStore.Images.Media._ID},
                 MediaStore.Images.Media.DATA + "=? ",
-                new String[] { filePath }, null);
+                new String[]{filePath}, null);
         Log.e("WangJJ", "2");
         if (cursor != null && cursor.moveToFirst()) {
             Log.e("WangJJ", "3");
