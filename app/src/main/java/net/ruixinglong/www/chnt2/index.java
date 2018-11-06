@@ -59,19 +59,21 @@ public class index extends AppCompatActivity {
         } else {
             mServer.startup();
         }
+//        getWindow().setFlags( WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         webView = (WebView) findViewById(R.id.webview);
-        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+//        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
         Log.e("Roy", webView.isHardwareAccelerated()+"");
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/video.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/index.html");
     }
 
     /**

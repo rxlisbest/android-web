@@ -1,0 +1,38 @@
+html,body{
+    height: 100%; padding: 0; margin: 0;
+    width: 100%;
+}
+.index-header{
+    height: 60%;
+    background: url(/images/index/header.png) no-repeat fixed top;
+    background-size:100% 100%;
+}
+.index-body{
+    height: 40%;
+}
+.index-body-logo{
+    float: left;
+    width: 30%;
+    margin-top: -5%;
+    text-align: center;
+}
+.index-body-logo img{
+    width: 75%;
+}
+.index-body-button{
+    height: 100%;
+    float: left;
+    width: 70%;
+}
+.index-body .index-body-button .index-body-button-item{
+    height: 35%;
+    float: left;
+    margin-left: 4%;
+    margin-top: 8%;
+}
+.index-body .index-body-button .index-body-button-item img{
+    height: 100%;
+}
+.clear{
+    clear: both;
+}
