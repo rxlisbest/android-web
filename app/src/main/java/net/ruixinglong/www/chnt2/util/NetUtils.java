@@ -60,7 +60,7 @@ public class NetUtils {
                 if (inetAddresses != null)
                     while (inetAddresses.hasMoreElements()) {
                         InetAddress inetAddress = inetAddresses.nextElement();
-                        if (!inetAddress.isLoopbackAddress() && isIPv4Address(inetAddress.getHostAddress())) {
+                        if (inetAddress.isLoopbackAddress() && isIPv4Address(inetAddress.getHostAddress())) {
                             return inetAddress;
                         }
                     }
