@@ -309,7 +309,7 @@ public class survey extends AppCompatActivity {
                 Cursor cursor = db.rawQuery(searchQuery, null);
                 JSONArray survey_log = cursor2json(cursor);
 
-                List<SurveyLogBean> list = new ArrayList<SurveyLogBean>();
+                List<List> list = new ArrayList<List>();
 
                 for (int i = 0; i < survey_log.length(); i++) {
                     try {
@@ -319,11 +319,10 @@ public class survey extends AppCompatActivity {
                         cursor = db.rawQuery(searchQuery, null);
                         JSONArray user = cursor2json(cursor);
                         if (user.length() > 0) {
-                            Log.d("RoyExcel", "1");
-                            SurveyLogBean row = new SurveyLogBean();
-                            row.setName(user.getJSONObject(0).get("name").toString());
-                            row.setPhone(user.getJSONObject(0).get("telephone").toString());
-                            row.setEmail(user.getJSONObject(0).get("email").toString());
+                            List<String> row = new ArrayList<String>();
+                            row.add(user.getJSONObject(0).get("name").toString());
+                            row.add(user.getJSONObject(0).get("telephone").toString());
+                            row.add(user.getJSONObject(0).get("email").toString());
 
                             searchQuery = "SELECT * FROM survey_question_log WHERE survey_log_id " +
                                     "= " + job.get("id") + " ORDER BY survey_question_id ASC";
@@ -361,37 +360,8 @@ public class survey extends AppCompatActivity {
                                     }
                                 }
                                 String a = String.join(";", option_text);
-                                switch (job1.get("survey_question_id").toString()) {
-                                    case "1":
-                                        row.setOne(a);
-                                        break;
-                                    case "2":
-                                        row.setTwo(a);
-                                        break;
-                                    case "3":
-                                        row.setThree(a);
-                                        break;
-                                    case "4":
-                                        row.setFour(a);
-                                        break;
-                                    case "5":
-                                        row.setFive(a);
-                                        break;
-                                    case "6":
-                                        row.setSix(a);
-                                        break;
-                                    case "7":
-                                        row.setSeven(a);
-                                        break;
-                                    case "8":
-                                        row.setEight(a);
-                                        break;
-                                    case "9":
-                                        row.setNine(a);
-                                        break;
-                                    default:
-                                        break;
-                                }
+
+                                row.add(a);
                             }
 
                             list.add(row);

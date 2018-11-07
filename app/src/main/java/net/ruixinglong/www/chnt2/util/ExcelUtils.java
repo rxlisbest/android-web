@@ -118,7 +118,7 @@ public class ExcelUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> void writeObjListToExcel(List<T> objList, String fileName, Context c) {
+    public static <T> void writeObjListToExcel(List<List> objList, String fileName, Context c) {
 
 
         if (objList != null && objList.size() > 0) {
@@ -133,20 +133,7 @@ public class ExcelUtils {
                 WritableSheet sheet = writebook.getSheet(0);
 
                 for (int j = 0; j < objList.size(); j++) {
-                    SurveyLogBean projectBean = (SurveyLogBean) objList.get(j);
-                    List<String> list = new ArrayList<>();
-                    list.add(projectBean.getName());
-                    list.add(projectBean.getPhone());
-                    list.add(projectBean.getEmail());
-                    list.add(projectBean.getOne());
-                    list.add(projectBean.getTwo());
-                    list.add(projectBean.getThree());
-                    list.add(projectBean.getFour());
-                    list.add(projectBean.getFive());
-                    list.add(projectBean.getSix());
-                    list.add(projectBean.getSeven());
-                    list.add(projectBean.getEight());
-                    list.add(projectBean.getNine());
+                    List<String> list = objList.get(j);
 
                     for (int i = 0; i < list.size(); i++) {
                         sheet.addCell(new Label(i, j + 1, list.get(i), arial12format));

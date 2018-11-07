@@ -301,16 +301,15 @@ public class user extends AppCompatActivity {
                 Cursor cursor = db.rawQuery(searchQuery, null);
                 JSONArray user = cursor2json(cursor);
 
-                List<UserBean> list = new ArrayList<UserBean>();
+                List<List> list = new ArrayList<List>();
 
                 for (int i = 0; i < user.length(); i++) {
                     try {
-
-                        UserBean row = new UserBean();
-                        row.setId(user.getJSONObject(i).get("_id").toString());
-                        row.setName(user.getJSONObject(i).get("name").toString());
-                        row.setPhone(user.getJSONObject(i).get("telephone").toString());
-                        row.setEmail(user.getJSONObject(i).get("email").toString());
+                        List<String> row = new ArrayList<String>();
+                        row.add(user.getJSONObject(i).get("_id").toString());
+                        row.add(user.getJSONObject(i).get("name").toString());
+                        row.add(user.getJSONObject(i).get("telephone").toString());
+                        row.add(user.getJSONObject(i).get("email").toString());
 
                         list.add(row);
                     } catch (JSONException e) {
