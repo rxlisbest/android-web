@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>List</title>
+    <title>LIST</title>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/list.css">
@@ -28,14 +28,15 @@
                 </div>
                 <div class="list-body-row-item-go">
                     <div class="list-body-row-item-go-icon">
-                        <img src="/images/list/icon_video.png" />
+                        <img v-if="type == 'video'" src="/images/list/icon_video.png" />
+                        <img v-else src="/images/list/icon_pdf.png" />
                     </div>
                     <a v-if="type == 'video'" v-bind:href="'video.html?src=' + vv.src">
                         <div class="list-body-row-item-go-button">
                             <p>CLICK PLAY</p>
                         </div>
                     </a>
-                    <a v-if="type == 'company'" v-bind:href="'pdf.html?path=' + vv.src">
+                    <a v-else v-bind:href="'pdf.html?path=' + vv.src">
                         <div class="list-body-row-item-go-button">
                             <p>CLICK OPEN</p>
                         </div>
