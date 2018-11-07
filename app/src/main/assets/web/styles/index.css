@@ -23,15 +23,16 @@ html,body{
     height: 100%;
     float: left;
     width: 70%;
+    text-align: center;
 }
 .index-body .index-body-button .index-body-button-item{
-    height: 35%;
+    width: 15%;
     float: left;
-    margin-left: 4%;
+    margin-left: 3%;
     margin-top: 8%;
 }
 .index-body .index-body-button .index-body-button-item img{
-    height: 100%;
+    width: 100%;
 }
 .clear{
     clear: both;

@@ -73,7 +73,7 @@ public class index extends AppCompatActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         Log.e("Roy", webView.isHardwareAccelerated()+"");
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/index.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/list.html");
     }
 
     /**

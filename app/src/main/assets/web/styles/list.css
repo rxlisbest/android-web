@@ -1,0 +1,109 @@
+html,body{
+    height: 100%; padding: 0; margin: 0;
+    width: 100%;
+}
+.list-header{
+    width: 100%;
+    height: 15%;
+    background: #FFFFFF;
+    background-size:100%;
+}
+.list-header-inner{
+    width: 100%;
+    height: 100%;
+    background: url(/images/list/header.png) no-repeat;
+    background-size:100%;
+}
+.list-body{
+    margin: 0 auto;
+    width: 90%;
+    background: #FFFFFF;
+    height: 64%;
+}
+.list-body-row{
+    width: 100%;
+    height: 38%;
+    text-align: center;
+}
+.list-body-line{
+    height: 8%;
+}
+.list-body-row-item{
+    float: left;
+    height: 100%;
+    width: 18%;
+    background: #fafafa;
+    margin-left: 5.6%;
+}
+.list-body-row-item .list-body-row-item-image{
+    height: 64%;
+    width: 100%;
+}
+.list-body-row-item .list-body-row-item-image img{
+    width: 100%;
+    height: 100%;
+}
+.list-body-row-item .list-body-row-item-title{
+    height: 17%;
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #e6e9ed;
+    border-bottom: 0px;
+    display: table;
+}
+.list-body-row-item .list-body-row-item-title p{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #666666;
+}
+.list-body-row-item .list-body-row-item-go{
+    height: 19%;
+    width: 100%;
+    border: 1px solid #e6e9ed;
+    color: #666666;
+}
+.list-body-row-item-go-button{
+    height: 100%;
+    float: right;
+    margin-right: 5%;
+    display: table;
+}
+.list-body-row-item-go-button p{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #666666;
+}
+.list-body-row-item-go-icon{
+    float: left;
+    margin-left: 5%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.list-body-row-item-go-icon img{
+    align-items: center;
+    height: 80%;
+}
+.list-line{
+    height: 3%;
+}
+.list-footer{
+    height: 15%;
+    width: 100%;
+    background: #FFFFFF;
+    border-top: 2px solid #adadad;
+}
+.list-footer-return{
+    // width: 50px;
+    // height: 50px;
+    background: url(/images/list/button_return.png) no-repeat;
+    background-size:100% 100%;
+    float: right;
+    margin-right: 50px;
+    margin-top: 10px;
+}
+.clear{
+    clear: both;
+}
