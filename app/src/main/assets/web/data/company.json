@@ -1,0 +1,14 @@
+[
+  [
+    {"name": "XINHUA", "src": "/company/1.pdf", "cover_src": "/images/company/1.png"},
+    {"name": "Astronergy Corporate", "src": "/company/2.pdf", "cover_src": "/images/company/2.png"},
+    {"name": "company profile", "src": "/company/3.pdf", "cover_src": "/images/company/3.png"},
+    {"name": "NOARK Introduction", "src": "/company/4.pdf", "cover_src": "/images/company/4.png"}
+  ],
+  [
+    {"name": "CHINT VI1.0", "src": "/company/5.pdf", "cover_src": "/images/company/5.png"},
+    {"name": "CHINT T&D", "src": "/company/6.pdf", "cover_src": "/images/company/6.png"},
+    {"name": "Company Profile EN", "src": "/company/7.pdf", "cover_src": "/images/company/7.png"},
+    {"name": "CHINT PRESENTATION", "src": "/company/8.pdf", "cover_src": "/images/company/8.png"}
+  ]
+]

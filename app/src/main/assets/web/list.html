@@ -35,6 +35,11 @@
                             <p>CLICK PLAY</p>
                         </div>
                     </a>
+                    <a v-if="type == 'company'" v-bind:href="'pdf.html?path=' + vv.src">
+                        <div class="list-body-row-item-go-button">
+                            <p>CLICK OPEN</p>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="clear"></div>

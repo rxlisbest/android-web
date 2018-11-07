@@ -10,14 +10,18 @@
     <script src="/scripts/vendor/modernizr.js"></script>
 </head>
 <body>
-<iframe src="/pdfjs/web/viewer.html?file=../../file/2.pdf" width="100%" height="100%">
+<iframe id="my-iframe" src="" width="100%" height="100%">
 </iframe>
 <script src="/scripts/vendor.js"></script>
 <script src="/scripts/plugins.js"></script>
 <script src="/scripts/main.js"></script>
 <script type="text/javascript" charset="utf-8">
     $(function () {
-
+        var path = GetQueryString('path');
+        if(path){
+            var src = "/pdfjs/web/viewer.html?file=../../file" + path;
+            $("#my-iframe").attr("src", src);
+        }
     });
 </script>
 </body>
