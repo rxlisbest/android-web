@@ -1,15 +1,13 @@
 package net.ruixinglong.www.chnt2;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -25,16 +23,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
-import com.yanzhenjie.andserver.filter.HttpCacheFilter;
-import com.yanzhenjie.andserver.website.AssetsWebsite;
 
-import net.ruixinglong.www.chnt2.bean.SurveyLogBean;
-import net.ruixinglong.www.chnt2.handler.LoginHandler;
-import net.ruixinglong.www.chnt2.handler.RegisterHandler;
-import net.ruixinglong.www.chnt2.handler.SurveyLogHandler;
-import net.ruixinglong.www.chnt2.handler.SurveyQuestionHandler;
+import net.ruixinglong.www.chnt2.bean.UserBean;
 import net.ruixinglong.www.chnt2.helper.DBHelper;
 import net.ruixinglong.www.chnt2.util.ExcelUtils;
 import net.ruixinglong.www.chnt2.util.NetUtils;
@@ -48,10 +39,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-public class survey extends AppCompatActivity {
+public class user extends AppCompatActivity {
     private WebView webView;
+
+    private Server mServer;
 
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private ValueCallback<Uri> mUploadCallbackBelow;
@@ -60,19 +52,13 @@ public class survey extends AppCompatActivity {
 
     DBHelper dbHelper = new DBHelper(this);
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setTitle("INVESTIGATION");
-        getWindow().setNavigationBarColor(Color.parseColor("#000000"));
-        if (getSupportActionBar() != null) {
-            // getSupportActionBar().hide();
-        }
-
+        this.setTitle("CUSTOMER");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         webView = (WebView) findViewById(R.id.webview);
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/login.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/register2.html");
         webView = (WebView) findViewById(R.id.webview);
 
         WebSettings wSet = webView.getSettings();
@@ -152,7 +138,6 @@ public class survey extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("WangJ", data.toString());
         if (requestCode == REQUEST_CODE) {
             // 经过上边(1)、(2)两个赋值操作，此处即可根据其值是否为空来决定采用哪种处理方法
             if (mUploadCallbackBelow != null) {
@@ -166,6 +151,24 @@ public class survey extends AppCompatActivity {
     }
 
     /**
+     * Server listener.
+     */
+    private Server.ServerListener mListener = new Server.ServerListener() {
+        @Override
+        public void onStarted() {
+            String hostAddress = mServer.getInetAddress().getHostAddress();
+        }
+
+        @Override
+        public void onStopped() {
+        }
+
+        @Override
+        public void onError(Exception e) {
+        }
+    };
+
+    /**
      * 调用相机
      */
     private void takePhoto() {
@@ -174,7 +177,6 @@ public class survey extends AppCompatActivity {
                 + Environment.DIRECTORY_PICTURES + File.separator;
         String fileName = "IMG_" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
         imageUri = Uri.fromFile(new File(filePath + fileName));
-        Log.d("WangJ", fileName);
 
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -182,28 +184,28 @@ public class survey extends AppCompatActivity {
 
 
         // 选择图片（不包括相机拍照）,则不用成功后发刷新图库的广播
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("image/*");
-        startActivityForResult(Intent.createChooser(i, "Image Chooser"), REQUEST_CODE);
+//        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//        i.addCategory(Intent.CATEGORY_OPENABLE);
+//        i.setType("image/*");
+//        startActivityForResult(Intent.createChooser(i, "Image Chooser"), REQUEST_CODE);
 
-//        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//
-//        Intent Photo = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//        Intent chooserIntent = Intent.createChooser(Photo, "Image Chooser");
-//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[]{captureIntent});
-//
-//        startActivityForResult(chooserIntent, REQUEST_CODE);
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+        Intent Photo = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        Intent chooserIntent = Intent.createChooser(Photo, "Image Chooser");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[]{captureIntent});
+
+        startActivityForResult(chooserIntent, REQUEST_CODE);
     }
 
 
     /**
      * Android API < 21(Android 5.0)版本的回调处理
-     *
      * @param resultCode 选取文件或拍照的返回码
-     * @param data       选取文件或拍照的返回结果
+     * @param data 选取文件或拍照的返回结果
      */
     private void chooseBelow(int resultCode, Intent data) {
         Log.e("WangJ", "返回调用方法--chooseBelow");
@@ -233,9 +235,8 @@ public class survey extends AppCompatActivity {
 
     /**
      * Android API >= 21(Android 5.0) 版本的回调处理
-     *
      * @param resultCode 选取文件或拍照的返回码
-     * @param data       选取文件或拍照的返回结果
+     * @param data 选取文件或拍照的返回结果
      */
     private void chooseAbove(int resultCode, Intent data) {
         Log.e("WangJ", "返回调用方法--chooseAbove");
@@ -254,15 +255,7 @@ public class survey extends AppCompatActivity {
                     }
                     mUploadCallbackAboveL.onReceiveValue(results);
                 } else {
-                    Log.e("WangJ", "系统返回URI：没有");
-//                    Uri contentUri1 = getImageContentUri(this, new File(imageUri.toString().replace
-//                            ("file://", "")));
-                    String test = "content://com.google.android.apps.photos.contentprovider/-1/1/content%3A%2F%2Fmedia%2Fexternal%2Fimages%2Fmedia%2F45/ORIGINAL/NONE/11787233";
-
-                    Log.e("WangJ", test);
-                    Uri test2 = Uri.parse(test);
-                    Log.e("WangJ", test2.toString());
-                    mUploadCallbackAboveL.onReceiveValue(new Uri[]{test2});
+                    mUploadCallbackAboveL.onReceiveValue(null);
                 }
             } else {
                 Log.e("WangJ", "自定义结果：" + imageUri.toString());
@@ -275,7 +268,6 @@ public class survey extends AppCompatActivity {
     }
 
     private void updatePhotos() {
-        Log.e("WangJ", imageUri.toString());
         // 该广播即使多发（即选取照片成功时也发送）也没有关系，只是唤醒系统刷新媒体文件
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(imageUri);
@@ -283,7 +275,7 @@ public class survey extends AppCompatActivity {
     }
 
     /**
-     * 创建菜单
+     *创建菜单
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -293,110 +285,34 @@ public class survey extends AppCompatActivity {
     }
 
     /**
-     * 菜单的点击事件
+     *菜单的点击事件
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case R.id.id_export_item:
                 Toast.makeText(this, "正在导出EXECL数据", Toast.LENGTH_SHORT).show();
                 // 查看数据
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                String searchQuery = "SELECT * FROM survey_log";
+                String searchQuery = "SELECT * FROM user";
                 Cursor cursor = db.rawQuery(searchQuery, null);
-                JSONArray survey_log = cursor2json(cursor);
+                JSONArray user = cursor2json(cursor);
 
-                List<SurveyLogBean> list = new ArrayList<SurveyLogBean>();
+                List<UserBean> list = new ArrayList<UserBean>();
 
-                for (int i = 0; i < survey_log.length(); i++) {
+                for (int i = 0; i < user.length(); i++) {
                     try {
-                        JSONObject job = survey_log.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                        searchQuery = "SELECT * FROM user WHERE _id = " + job.get("user_id").toString();
-                        // Log.d("RoyExcel", searchQuery);
-                        cursor = db.rawQuery(searchQuery, null);
-                        JSONArray user = cursor2json(cursor);
-                        if (user.length() > 0) {
-                            Log.d("RoyExcel", "1");
-                            SurveyLogBean row = new SurveyLogBean();
-                            row.setName(user.getJSONObject(0).get("name").toString());
-                            row.setPhone(user.getJSONObject(0).get("telephone").toString());
-                            row.setEmail(user.getJSONObject(0).get("email").toString());
 
-                            searchQuery = "SELECT * FROM survey_question_log WHERE survey_log_id " +
-                                    "= " + job.get("id") + " ORDER BY survey_question_id ASC";
-                            // Log.d("RoyExcel", searchQuery);
-                            cursor = db.rawQuery(searchQuery, null);
-                            JSONArray survey_question_log = cursor2json(cursor);
+                        UserBean row = new UserBean();
+                        row.setId(user.getJSONObject(i).get("_id").toString());
+                        row.setName(user.getJSONObject(i).get("name").toString());
+                        row.setPhone(user.getJSONObject(i).get("telephone").toString());
+                        row.setEmail(user.getJSONObject(i).get("email").toString());
 
-                            for (int ii = 0; ii < survey_question_log.length(); ii++) {
-                                JSONObject job1 = survey_question_log.getJSONObject(ii); // 遍历 jsonarray
-                                List<String> option_text = new ArrayList<String>();
-                                JSONArray answer = new JSONArray(job1.get("answer")
-                                        .toString());
-                                // 选择题
-                                // 数组，把每一个对象转成 json 对象
-
-                                for (int iii = 0; iii < answer.length(); iii++) {
-                                    JSONObject job2 = answer.getJSONObject(iii);
-
-                                    // 简答题
-                                    if (job1.get("survey_question_id").toString().equals("9")) {
-                                        Log.d("RoyJ", job2.get("text").toString());
-                                        option_text.add(job2.get("text").toString());
-                                    } else {
-                                        searchQuery = "SELECT * FROM survey_question_option WHERE " +
-                                                "id " +
-                                                "= " + job2.get("id");
-                                        // Log.d("RoyExcel", searchQuery);
-                                        cursor = db.rawQuery(searchQuery, null);
-                                        JSONArray option = cursor2json(cursor);
-
-                                        if (option.length() > 0) {
-                                            option_text.add(option.getJSONObject(0).get("content")
-                                                    .toString() + " " + job2.get("text"));
-                                        }
-                                    }
-                                }
-                                String a = String.join(";", option_text);
-                                switch (job1.get("survey_question_id").toString()) {
-                                    case "1":
-                                        row.setOne(a);
-                                        break;
-                                    case "2":
-                                        row.setTwo(a);
-                                        break;
-                                    case "3":
-                                        row.setThree(a);
-                                        break;
-                                    case "4":
-                                        row.setFour(a);
-                                        break;
-                                    case "5":
-                                        row.setFive(a);
-                                        break;
-                                    case "6":
-                                        row.setSix(a);
-                                        break;
-                                    case "7":
-                                        row.setSeven(a);
-                                        break;
-                                    case "8":
-                                        row.setEight(a);
-                                        break;
-                                    case "9":
-                                        row.setNine(a);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            list.add(row);
-                        }
-
+                        list.add(row);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -408,25 +324,11 @@ public class survey extends AppCompatActivity {
                 if (!tempPath.exists()) {
                     tempPath.mkdirs();
                 }
-                String fileName = tempPath + "/Download/customers_" + DateFormat.format
-                        ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".xls";
+                String fileName = tempPath + "/Download/user_"+DateFormat.format
+                        ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA))+".xls";
 
-                searchQuery = "SELECT * FROM survey_question ORDER BY id ASC";
-                cursor = db.rawQuery(searchQuery, null);
-                JSONArray survey_question = cursor2json(cursor);
-                String[] title = {"姓名", "电话", "邮箱", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-                for (int i = 0; i < survey_question.length(); i++) {
-                    JSONObject j = null;
-                    try {
-                        j = survey_question.getJSONObject(i);
-                        title[i + 3] = j.get("content").toString();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                String[] title = {"ID", "姓名", "电话", "邮箱"};
 
-                Log.d("RoyExcel", survey_question.toString());
-                Log.d("Roy", fileName);
                 ExcelUtils.initExcel(fileName, title);
                 ExcelUtils.writeObjListToExcel(list, fileName, this);
                 Toast.makeText(this, "导出成功", Toast.LENGTH_SHORT).show();
@@ -438,39 +340,6 @@ public class survey extends AppCompatActivity {
         return true;
     }
 
-
-    private Uri getImageContentUri(Context context, File imageFile) {
-        String filePath = imageFile.getAbsolutePath();
-
-        Log.e("WangJJ", "1");
-        Cursor cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Images.Media._ID},
-                MediaStore.Images.Media.DATA + "=? ",
-                new String[]{filePath}, null);
-        Log.e("WangJJ", "2");
-        if (cursor != null && cursor.moveToFirst()) {
-            Log.e("WangJJ", "3");
-            int id = cursor.getInt(cursor
-                    .getColumnIndex(MediaStore.MediaColumns._ID));
-
-            Log.e("WangJJ", "4");
-            Uri baseUri = Uri.parse("content://media/external/images/media");
-            return Uri.withAppendedPath(baseUri, "" + id);
-        } else {
-            Log.e("WangJJ", "5");
-            if (imageFile.exists()) {
-                Log.e("WangJJ", "6");
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DATA, filePath);
-                return context.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            } else {
-                Log.e("WangJJ", "7");
-                return null;
-            }
-        }
-    }
 
     private JSONArray cursor2json(Cursor cursor) {
         JSONArray resultSet = new JSONArray();

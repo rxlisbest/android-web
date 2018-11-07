@@ -19,12 +19,11 @@
 
 <div class="container">
     <form id="ajax_form">
-        <input name="employee_id" type="hidden">
+        <input name="employee_id" type="hidden" value="1">
         <div class="box reg">
             <label for="card" class="card">
                 <input type="file" name="card" id="card" accept="image/*" class="card__file" id="card" type>
                 <img src="" width="100%" height="100%" class="card__img">
-                <input type="hidden" name="card_base64">
             </label>
 
             <div class="form-group">
@@ -57,23 +56,17 @@
 
 <script type="text/javascript" charset="utf-8">
     function logout(){
-        window.localStorage.removeItem("employee_id");
-        window.location.href = "/login.html";
+
     }
     $(function () {
-        $("input[name='employee_id']").val(window.localStorage.getItem("employee_id"));
-        if(window.localStorage.getItem("user_id")){
-            window.location.href = "/add.html";
-        }
         $("#ajax_form").submit(function () {
-           $.ajax({
+            $.ajax({
                 type: 'POST',
                 url: '/register',
                 data: $("#ajax_form").serialize(),
                 dataType: "json",
                 success:function(data){
-                    window.localStorage.setItem("user_id", data.user_id);
-                    window.location.href = "/register.html";
+                    window.location.reload();
                 },
                 error:function(XMLHttpRequest){
                     //请求出错处理
@@ -83,7 +76,7 @@
             return false;
         });
     });
-    /**
+
     $('#card').on('change', function (e) {
         $('.card__img').attr('src', '');
         var file = e.target.files[0];
@@ -93,10 +86,8 @@
 
         reader.onload = function (e) {
             $('.card__img').attr('src', e.target.result);
-            $("input[name='card_base64']").val(e.target.result);
         };
     });
-    **/
 </script>
 </body>
 </html>

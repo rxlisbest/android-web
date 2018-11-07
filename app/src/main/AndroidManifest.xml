@@ -14,6 +14,8 @@
         >
         <activity android:name=".survey">
         </activity>
+        <activity android:name=".user">
+        </activity>
         <activity android:name=".index" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -87,7 +87,7 @@ public class index extends AppCompatActivity {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/list.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/index.html");
     }
 
     /**
@@ -113,6 +113,8 @@ public class index extends AppCompatActivity {
         //此处应该定义常量对应，同时提供给web页面编写者
         if (TextUtils.equals(activityName, "survey")) {
             startActivity(new Intent(this, survey.class));
+        } else if (TextUtils.equals(activityName, "user")) {
+            startActivity(new Intent(this, user.class));
         }
     }
 

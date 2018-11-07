@@ -70,31 +70,20 @@
             window.location.href = "/register.html";
         }
         $("#ajax_form").submit(function () {
-            swal({
-                    title: "",
-                    text: "Please confirm the information",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes",
-                    closeOnConfirm: false
+             $.ajax({
+                type: 'POST',
+                url: '/login',
+                data: $("#ajax_form").serialize(),
+                dataType: "json",
+                success:function(data){
+                    window.localStorage.setItem("employee_id", data.employee_id);
+                    window.location.href = "/register.html";
                 },
-                function(){
-                    $.ajax({
-                        type: 'POST',
-                        url: '/login',
-                        data: $("#ajax_form").serialize(),
-                        dataType: "json",
-                        success:function(data){
-                            window.localStorage.setItem("employee_id", data.employee_id);
-                            window.location.href = "/register.html";
-                        },
-                        error:function(XMLHttpRequest){
-                            //请求出错处理
-                            sweetAlert("", XMLHttpRequest.responseText, "error");
-                        }
-                    });
-                });
+                error:function(XMLHttpRequest){
+                    //请求出错处理
+                    sweetAlert("", XMLHttpRequest.responseText, "error");
+                }
+            });
             return false;
         });
     });
