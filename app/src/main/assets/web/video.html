@@ -8,10 +8,11 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/video-js.css">
+    <link rel="stylesheet" href="/styles/video.css">
     <script src="/scripts/vendor/modernizr.js"></script>
 </head>
 <body>
-<video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+<video id="my-video" class="video-js" controls preload="auto" width="100%" height="100%"
        poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
     <source src="/file/video/2.mp4" type='video/mp4'>
     <p class="vjs-no-js">
@@ -23,9 +24,13 @@
 <script src="/scripts/vendor.js"></script>
 <script src="/scripts/plugins.js"></script>
 <script src="/scripts/main.js"></script>
-<script src="/scripts/video.js?v=1"></script>
+<script src="/scripts/video.js"></script>
 <script type="text/javascript" charset="utf-8">
     $(function () {
+        var src = GetQueryString('src');
+        var myPlayer = videojs('my-video');
+        myPlayer.src(src);
+        myPlayer.load(src);
     });
 </script>
 </body>

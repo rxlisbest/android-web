@@ -1,15 +1,20 @@
 package net.ruixinglong.www.chnt2;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
@@ -30,6 +35,7 @@ public class index extends AppCompatActivity {
     private WebView webView;
     private Server mServer;
 
+    @SuppressLint("JavascriptInterface")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,14 @@ public class index extends AppCompatActivity {
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-        Log.e("Roy", webView.isHardwareAccelerated()+"");
+        webView.addJavascriptInterface(this, "nativeMethod");
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
         webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/list.html");
     }
 
@@ -93,4 +106,12 @@ public class index extends AppCompatActivity {
         public void onError(Exception e) {
         }
     };
+
+    @JavascriptInterface
+    public void toActivity(String activityName) {
+        //此处应该定义常量对应，同时提供给web页面编写者
+        if (TextUtils.equals(activityName, "survey")) {
+            startActivity(new Intent(this, survey.class));
+        }
+    }
 }

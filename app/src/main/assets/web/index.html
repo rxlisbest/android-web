@@ -17,11 +17,29 @@
         <img src="/images/index/logo.png">
     </div>
     <div class="index-body-button">
-        <div class="index-body-button-item"><img src="/images/index/company.png"></div>
-        <div class="index-body-button-item"><img src="/images/index/product.png"></div>
-        <div class="index-body-button-item"><img src="/images/index/video.png"></div>
-        <div class="index-body-button-item"><img src="/images/index/customer.png"></div>
-        <div class="index-body-button-item"><img src="/images/index/investigation.png"></div>
+        <div class="index-body-button-item">
+            <a href="list.html?type=company">
+                <img src="/images/index/company.png">
+            </a>
+        </div>
+        <div class="index-body-button-item">
+            <a href="list.html?type=product">
+                <img src="/images/index/product.png">
+            </a>
+        </div>
+        <div class="index-body-button-item">
+            <a href="list.html?type=video">
+                <img src="/images/index/video.png">
+            </a>
+        </div>
+        <div class="index-body-button-item">
+            <a href="list.html?type=customer">
+                <img src="/images/index/customer.png">
+            </a>
+        </div>
+        <div class="index-body-button-item" onclick="to('survey')">
+            <img src="/images/index/investigation.png">
+        </div>
         <div class="clear"></div>
     </div>
     <div class="clear"></div>
@@ -30,6 +48,9 @@
 <script src="/scripts/plugins.js"></script>
 <script src="/scripts/main.js"></script>
 <script type="text/javascript" charset="utf-8">
+    function to(activity){
+        nativeMethod.toActivity(activity);
+    }
     $(function () {
     });
 </script>

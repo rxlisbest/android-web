@@ -15,50 +15,78 @@
     <div class="list-header-inner"></div>
 </div>
 <div class="list-line"></div>
-<div class="list-body">
-    <div class="list-body-line"></div>
-    <div class="list-body-row">
-        <div class="list-body-row-item">
-            <div class="list-body-row-item-image">
-                <img src="/images/video/2.png" />
-            </div>
-            <div class="list-body-row-item-title">
-                <p>Hello World</p>
-            </div>
-            <div class="list-body-row-item-go">
-                <div class="list-body-row-item-go-icon">
-                    <img src="/images/list/icon_video.png" />
+<div class="list-body" id="box">
+    <template v-for="(v, k) in list">
+        <div class="list-body-line"></div>
+        <div class="list-body-row">
+            <div class="list-body-row-item" v-for="(vv, kk) in v">
+                <div class="list-body-row-item-image">
+                    <img v-bind:src="vv.cover_src" />
                 </div>
-                <div class="list-body-row-item-go-button">
-                    <p>CLICK PLAY</p>
+                <div class="list-body-row-item-title">
+                    <p v-text="vv.name"></p>
+                </div>
+                <div class="list-body-row-item-go">
+                    <div class="list-body-row-item-go-icon">
+                        <img src="/images/list/icon_video.png" />
+                    </div>
+                    <a v-if="type == 'video'" v-bind:href="'video.html?src=' + vv.src">
+                        <div class="list-body-row-item-go-button">
+                            <p>CLICK PLAY</p>
+                        </div>
+                    </a>
                 </div>
             </div>
+            <div class="clear"></div>
         </div>
-        <div class="list-body-row-item"></div>
-        <div class="list-body-row-item"></div>
-        <div class="list-body-row-item"></div>
-        <div class="clear"></div>
-    </div>
-    <div class="list-body-line"></div>
-    <div class="list-body-row">
-        <div class="list-body-row-item"></div>
-        <div class="list-body-row-item"></div>
-        <div class="list-body-row-item"></div>
-        <div class="list-body-row-item"></div>
-        <div class="clear"></div>
-    </div>
+    </template>
 </div>
 <div class="list-line"></div>
 <div class="list-footer">
-    <div class="list-footer-return">
-        <img src="/images/list/button_return.png" />
-    </div>
+    <a href="index.html">
+        <div class="list-footer-return">
+            <img src="/images/list/button_return.png" />
+        </div>
+    </a>
 </div>
 <script src="/scripts/vendor.js"></script>
 <script src="/scripts/plugins.js"></script>
 <script src="/scripts/main.js"></script>
+<script src="/scripts/vue.js"></script>
+<script src="/scripts/sweetalert.min.js"></script>
+<link rel="stylesheet" href="/styles/sweetalert.css">
 <script type="text/javascript" charset="utf-8">
     $(function () {
+        var app = new Vue({
+            el: '#box',
+            data: {
+                list: [],
+                type: ''
+            },
+            methods: {
+                init: function () {
+                    var _this = this;
+                    var type = GetQueryString('type');
+                    if(type){
+                        _this.type = type;
+                        var url = '/data/' + type + '.json';
+                        $.ajax({
+                            type: 'GET',
+                            url: url,
+                            dataType: "json",
+                            success:function(data){
+                                _this.list = data;
+                            },
+                            error:function(){
+                                //请求出错处理
+                                sweetAlert("", "数据错误", "error");
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        app.init();
     });
 </script>
 </body>
