@@ -28,9 +28,11 @@
 <script type="text/javascript" charset="utf-8">
     $(function () {
         var src = GetQueryString('src');
-        var myPlayer = videojs('my-video');
-        myPlayer.src(src);
-        myPlayer.load(src);
+        if(src){
+            var myPlayer = videojs('my-video');
+            myPlayer.src(src);
+            myPlayer.load(src);
+        }
     });
 </script>
 </body>
