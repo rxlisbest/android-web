@@ -58,7 +58,7 @@ public class user extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         this.setTitle("CUSTOMER");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index);
+        setContentView(R.layout.activity_user);
         webView = (WebView) findViewById(R.id.webview);
         webView.addJavascriptInterface(this, "nativeMethod");
         webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/register2.html");
@@ -293,7 +293,7 @@ public class user extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        Log.d("RoyExcel", "2");
         switch (item.getItemId()){
             case R.id.id_export_item:
                 Toast.makeText(this, "正在导出EXECL数据", Toast.LENGTH_SHORT).show();

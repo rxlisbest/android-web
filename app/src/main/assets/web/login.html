@@ -31,7 +31,10 @@
     </style>
 </head>
 <body>
-<img src="/images/header.png" class="header" onclick="to('index')">
+<div class="header">
+    <div class="logo" onclick="to('index')"></div>
+    <img src="/images/header.png" class="header-img">
+</div>
 
 <div class="container">
     <form id="ajax_form">
@@ -95,6 +98,11 @@
         $("input").each(function () {
             $(this).val('');
         });
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        $(".logo").css("height", $(".header").height());
     });
 </script>
 </body>

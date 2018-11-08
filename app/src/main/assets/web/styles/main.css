@@ -5712,3 +5712,12 @@ input,input:focus,input:active {
 .cancel{
     background-color: #ffae00 !important;
 }
+.header-img{
+    width: 100%;
+}
+.header .logo{
+    height: 100%;
+    width: 30%;
+    position: absolute;
+    top: 0;
+}
