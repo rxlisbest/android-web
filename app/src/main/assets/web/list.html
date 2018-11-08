@@ -21,7 +21,12 @@
         <div class="list-body-row">
             <div class="list-body-row-item" v-for="(vv, kk) in v">
                 <div class="list-body-row-item-image">
-                    <img v-bind:src="vv.cover_src" />
+                    <a v-if="type == 'video'" v-bind:href="'video.html?src=' + vv.src">
+                        <img v-bind:src="vv.cover_src" />
+                    </a>
+                    <a v-else v-bind:href="'pdf.html?path=' + vv.src">
+                        <img v-bind:src="vv.cover_src" />
+                    </a>
                 </div>
                 <div class="list-body-row-item-title">
                     <p v-text="vv.name"></p>

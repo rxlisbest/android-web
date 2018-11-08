@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/styles/sweetalert.css">
 </head>
 <body>
-<img src="/images/header.png" class="header">
+<img src="/images/header.png" class="header" onclick="to('index')">
 
 <div class="container">
     <form id="ajax_form">
@@ -56,6 +56,9 @@
 <script src="/scripts/main.js"></script>
 
 <script type="text/javascript" charset="utf-8">
+    function to(activity){
+        nativeMethod.toActivity(activity);
+    }
     function logout(){
         window.localStorage.removeItem("employee_id");
         window.location.href = "/login.html";

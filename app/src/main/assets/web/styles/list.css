@@ -56,6 +56,11 @@ html,body{
     vertical-align: middle;
     text-align: center;
     color: #666666;
+    font-size:8px;
+    -webkit-transform:scale(0.8);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
 }
 .list-body-row-item .list-body-row-item-go{
     height: 19%;
@@ -74,6 +79,11 @@ html,body{
     vertical-align: middle;
     text-align: center;
     color: #666666;
+    font-size:8px;
+    -webkit-transform:scale(0.8);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
 }
 .list-body-row-item-go-icon{
     float: left;

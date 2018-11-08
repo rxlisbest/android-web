@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-<img src="/images/header.png" class="header">
+<img src="/images/header.png" class="header" onclick="to('index')">
 
 <div class="container que">
     <form id="ajax_form">
@@ -111,6 +111,9 @@
 <link rel="stylesheet" href="/styles/sweetalert.css">
 
 <script type="text/javascript" charset="utf-8">
+    function to(activity){
+        nativeMethod.toActivity(activity);
+    }
     $(function () {
         $("input[name='user_id']").val(window.localStorage.getItem("user_id"));
         var app = new Vue({

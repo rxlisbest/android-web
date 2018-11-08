@@ -11,10 +11,12 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -58,6 +60,7 @@ public class user extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         webView = (WebView) findViewById(R.id.webview);
+        webView.addJavascriptInterface(this, "nativeMethod");
         webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/register2.html");
         webView = (WebView) findViewById(R.id.webview);
 
@@ -363,5 +366,17 @@ public class user extends AppCompatActivity {
             cursor.moveToNext();
         }
         return resultSet;
+    }
+
+    @JavascriptInterface
+    public void toActivity(String activityName) {
+        //此处应该定义常量对应，同时提供给web页面编写者
+        if (TextUtils.equals(activityName, "survey")) {
+            startActivity(new Intent(this, survey.class));
+        } else if (TextUtils.equals(activityName, "user")) {
+            startActivity(new Intent(this, user.class));
+        } else if (TextUtils.equals(activityName, "index")) {
+            startActivity(new Intent(this, index.class));
+        }
     }
 }
