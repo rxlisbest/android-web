@@ -144,7 +144,7 @@ public class SurveyLogHandler implements RequestHandler {
                             answer_object.put("id", children.getJSONObject(ii).get
                                     ("id").toString());
                             if (params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).length() > 0) {
-                                answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
+                                answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).toString());
                             } else {
                                 answer_object.put("text", "");
                             }
@@ -172,7 +172,7 @@ public class SurveyLogHandler implements RequestHandler {
                                     if (params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")+ "." + children2.getJSONObject(iii).get
                                             ("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")+ "." + children2.getJSONObject(iii).get
                                             ("id")).length() > 0) {
-                                        answer_object2.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
+                                        answer_object2.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")+ "." + children2.getJSONObject(iii).get("id")).toString());
                                     } else {
                                         answer_object2.put("text", "");
                                     }
@@ -190,7 +190,7 @@ public class SurveyLogHandler implements RequestHandler {
                             answer_object.put("id", children.getJSONObject(ii).get
                                     ("id").toString());
                             if (params.containsKey("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")) && params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).length() > 0) {
-                                answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id")).toString());
+                                answer_object.put("text", params.get("answer_text." + resultSet.getJSONObject(i).get("id") + "." + children.getJSONObject(ii).get("id")).toString());
                             } else {
                                 answer_object.put("text", "");
                             }
