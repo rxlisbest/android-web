@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.yanzhenjie.andserver.Server;
 
-import net.ruixinglong.www.chnt2.bean.UserBean;
 import net.ruixinglong.www.chnt2.helper.DBHelper;
 import net.ruixinglong.www.chnt2.util.ExcelUtils;
 import net.ruixinglong.www.chnt2.util.NetUtils;
@@ -42,7 +41,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class user extends AppCompatActivity {
+public class remark extends AppCompatActivity {
     private WebView webView;
 
     private Server mServer;
@@ -56,12 +55,12 @@ public class user extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setTitle("CUSTOMER");
+        this.setTitle("REMARK");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_remark);
         webView = (WebView) findViewById(R.id.webview);
         webView.addJavascriptInterface(this, "nativeMethod");
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/register2.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/remark.html");
         webView = (WebView) findViewById(R.id.webview);
 
         WebSettings wSet = webView.getSettings();
@@ -300,36 +299,32 @@ public class user extends AppCompatActivity {
                 // 查看数据
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                String searchQuery = "SELECT * FROM user";
+                String searchQuery = "SELECT * FROM survey_remark";
                 Cursor cursor = db.rawQuery(searchQuery, null);
-                JSONArray user = cursor2json(cursor);
+                JSONArray remark = cursor2json(cursor);
 
                 List<List> list = new ArrayList<List>();
 
-                for (int i = 0; i < user.length(); i++) {
+                for (int i = 0; i < remark.length(); i++) {
                     try {
                         List<String> row = new ArrayList<String>();
-                        row.add(user.getJSONObject(i).get("_id").toString());
-                        row.add(user.getJSONObject(i).get("name").toString());
-                        row.add(user.getJSONObject(i).get("telephone").toString());
-                        row.add(user.getJSONObject(i).get("email").toString());
+                        row.add(remark.getJSONObject(i).get("id").toString());
+                        row.add(remark.getJSONObject(i).get("content").toString());
 
                         list.add(row);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
                 File tempPath = Environment.getExternalStorageDirectory();
                 //文件夹是否已经存在
                 if (!tempPath.exists()) {
                     tempPath.mkdirs();
                 }
-                String fileName = tempPath + "/Download/user_"+DateFormat.format
+                String fileName = tempPath + "/Download/remark_"+DateFormat.format
                         ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA))+".xls";
 
-                String[] title = {"ID", "姓名", "电话", "邮箱"};
+                String[] title = {"ID", "内容"};
 
                 ExcelUtils.initExcel(fileName, title);
                 ExcelUtils.writeObjListToExcel(list, fileName, this);

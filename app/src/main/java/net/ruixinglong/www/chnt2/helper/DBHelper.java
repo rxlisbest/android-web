@@ -93,6 +93,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 "update_time BIGINT(20))";
         db.execSQL(sql);
 
+        sql = "CREATE TABLE IF NOT EXISTS survey_remark(" +
+                "id integer not null primary key autoincrement," +
+                "user_id int(11)," +
+                "content varchar(1000)," +
+                "create_time BIGINT(20)," +
+                "update_time BIGINT(20))";
+        db.execSQL(sql);
+
         sql = "CREATE TABLE IF NOT EXISTS survey_question_log(" +
                 "id integer not null primary key autoincrement," +
                 "survey_log_id int(11)," +

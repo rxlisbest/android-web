@@ -24,6 +24,7 @@ import com.yanzhenjie.andserver.website.AssetsWebsite;
 
 import net.ruixinglong.www.chnt2.handler.LoginHandler;
 import net.ruixinglong.www.chnt2.handler.RegisterHandler;
+import net.ruixinglong.www.chnt2.handler.RemarkHandler;
 import net.ruixinglong.www.chnt2.handler.SurveyLogHandler;
 import net.ruixinglong.www.chnt2.handler.SurveyQuestionHandler;
 import net.ruixinglong.www.chnt2.helper.DBHelper;
@@ -57,6 +58,7 @@ public class index extends AppCompatActivity {
                 .registerHandler("/login", new LoginHandler(this))
                 .registerHandler("/survey_question", new SurveyQuestionHandler(this))
                 .registerHandler("/survey_log", new SurveyLogHandler(this))
+                .registerHandler("/remark", new RemarkHandler(this))
                 .filter(new HttpCacheFilter())
                 .listener(mListener)
                 .build();
@@ -115,6 +117,10 @@ public class index extends AppCompatActivity {
             startActivity(new Intent(this, survey.class));
         } else if (TextUtils.equals(activityName, "user")) {
             startActivity(new Intent(this, user.class));
+        } else if (TextUtils.equals(activityName, "remark")) {
+            startActivity(new Intent(this, remark.class));
+        } else if (TextUtils.equals(activityName, "index")) {
+            startActivity(new Intent(this, index.class));
         }
     }
 

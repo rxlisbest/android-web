@@ -75,7 +75,7 @@ public class survey extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
         webView = (WebView) findViewById(R.id.webview);
         webView.addJavascriptInterface(this, "nativeMethod");
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/login.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/register.html");
         webView = (WebView) findViewById(R.id.webview);
 
         WebSettings wSet = webView.getSettings();
@@ -490,6 +490,8 @@ public class survey extends AppCompatActivity {
             startActivity(new Intent(this, survey.class));
         } else if (TextUtils.equals(activityName, "user")) {
             startActivity(new Intent(this, user.class));
+        } else if (TextUtils.equals(activityName, "remark")) {
+            startActivity(new Intent(this, remark.class));
         } else if (TextUtils.equals(activityName, "index")) {
             startActivity(new Intent(this, index.class));
         }

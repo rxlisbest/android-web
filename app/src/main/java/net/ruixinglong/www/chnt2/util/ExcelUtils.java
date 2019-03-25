@@ -80,18 +80,12 @@ public class ExcelUtils {
         WritableWorkbook workbook = null;
         Log.d("Roy", fileName);
         try {
-            Log.d("Roy", "1");
             File file = new File(fileName);
-            Log.d("Roy", "2");
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
-                Log.d("Roy", "3");
                 file.createNewFile();
-                Log.d("Roy", "4");
-                Log.d("Roy", fileName);
             }
             else{
-                Log.d("Roy2", fileName);
             }
             workbook = Workbook.createWorkbook(file);
             //设置表格的名字
