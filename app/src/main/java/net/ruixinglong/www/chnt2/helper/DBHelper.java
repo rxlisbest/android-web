@@ -37,24 +37,33 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
         Log.d("ERROR", sql);
 
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '1', '2', '1、Overall, how would you rate this event？', '1', '1528693761', '1528693761')";
+        // sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '1', '2', '1、Overall, how would you rate this event？', '1', '1528693761', '1528693761')";
+        // db.execSQL(sql);
+        // sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '2', '2', '2、How likely is it that you would recommend CHINT Electric to a friend or colleague?', '0', '1528693761', '1528693761')";
+        // db.execSQL(sql);
+        // sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '3', '2', '3、Which industry are you in?', '0', '1528693761', '1528693761')";
+        // db.execSQL(sql);
+//        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '4', '2', '4、Are you?', '0', '1528693761', '1528693761')";
+//        db.execSQL(sql);
+
+        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '3', '2', '1、Which industry are you in?', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '2', '2', '2、How likely is it that you would recommend CHINT Electric to a friend or colleague?', '0', '1528693761', '1528693761')";
+        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '4', '2', '2、Are you?', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '3', '2', '3、Which industry are you in?', '0', '1528693761', '1528693761')";
+        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '5', '2', '3、Products you are interested in\\nComponent:', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '4', '2', '4、Are you?', '0', '1528693761', '1528693761')";
+        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '9', '3', '4、Do you have any other comments, questions, or concerns:', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '5', '2', '5、Products you are interested in\\nComponent:', '0', '1528693761', '1528693761')";
-        db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '6', '2', '6、How long have you been a customer of our company?', '0', '1528693761', '1528693761')";
-        db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '7', '2', '7、How likely are you to replace your current product with CHINT’s product?', '0', '1528693761', '1528693761')";
-        db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '8', '1', '8、Have you ever heard about CHINT Electric?', '0', '1528693761', '1528693761')";
-        db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '9', '3', '9、Do you have any other comments, questions, or concerns:', '0', '1528693761', '1528693761')";
-        db.execSQL(sql);
+//        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '5', '2', '5、Products you are interested in\\nComponent:', '0', '1528693761', '1528693761')";
+//        db.execSQL(sql);
+//        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '6', '2', '6、How long have you been a customer of our company?', '0', '1528693761', '1528693761')";
+//        db.execSQL(sql);
+//        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '7', '2', '7、How likely are you to replace your current product with CHINT’s product?', '0', '1528693761', '1528693761')";
+//        db.execSQL(sql);
+//        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '8', '1', '8、Have you ever heard about CHINT Electric?', '0', '1528693761', '1528693761')";
+//        db.execSQL(sql);
+//        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '9', '3', '9、Do you have any other comments, questions, or concerns:', '0', '1528693761', '1528693761')";
+//        db.execSQL(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS survey_question_option(" +
                 "id integer not null primary key autoincrement," +

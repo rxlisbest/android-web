@@ -4,3 +4,6 @@ app/build/
 .gradle
 *.iml
 local.properties
+app/src/main/assets/web/file/
+build/
+app/release

@@ -75,7 +75,7 @@ public class survey extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
         webView = (WebView) findViewById(R.id.webview);
         webView.addJavascriptInterface(this, "nativeMethod");
-        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/register.html");
+        webView.loadUrl("http://" + NetUtils.getLocalIPAddress() + ":8080/login.html");
         webView = (WebView) findViewById(R.id.webview);
 
         WebSettings wSet = webView.getSettings();

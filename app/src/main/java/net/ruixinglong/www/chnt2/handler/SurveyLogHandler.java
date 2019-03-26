@@ -100,15 +100,15 @@ public class SurveyLogHandler implements RequestHandler {
         }
         Log.d("RoyTest", resultSet.toString());
 
-        if (resultSet.length() > do_count) {
-            int undo_count = resultSet.length() - do_count;
-            response.setStatusCode(400);
-            StringEntity stringEntity = new StringEntity("There is " + undo_count + " question " +
-                    "unanswered",
-                    "utf-8");
-            response.setEntity(stringEntity);
-            return;
-        }
+//        if (resultSet.length() > do_count) {
+//            int undo_count = resultSet.length() - do_count;
+//            response.setStatusCode(400);
+//            StringEntity stringEntity = new StringEntity("There is " + undo_count + " question " +
+//                    "unanswered",
+//                    "utf-8");
+//            response.setEntity(stringEntity);
+//            return;
+//        }
 
         // 插入survey_log表
         db = dbHelper.getWritableDatabase();

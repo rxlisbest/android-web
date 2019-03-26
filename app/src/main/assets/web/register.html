@@ -62,10 +62,10 @@
     function to(activity){
         nativeMethod.toActivity(activity);
     }
-    // function logout(){
-    //    window.localStorage.removeItem("employee_id");
-    //    window.location.href = "/login.html";
-    // }
+    function logout(){
+       window.localStorage.removeItem("employee_id");
+       window.location.href = "/login.html";
+    }
     $(function () {
         // $("input[name='employee_id']").val(window.localStorage.getItem("employee_id"));
         $("input[name='employee_id']").val(0);
