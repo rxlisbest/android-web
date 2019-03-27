@@ -67,8 +67,7 @@
        window.location.href = "/login.html";
     }
     $(function () {
-        // $("input[name='employee_id']").val(window.localStorage.getItem("employee_id"));
-        $("input[name='employee_id']").val(0);
+        $("input[name='employee_id']").val(window.localStorage.getItem("employee_id"));
         if(window.localStorage.getItem("user_id")){
             window.location.href = "/add.html";
         }

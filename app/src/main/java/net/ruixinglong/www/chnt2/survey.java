@@ -301,10 +301,8 @@ public class survey extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("RoyExcel", "1");
         switch (item.getItemId()) {
             case R.id.id_export_item:
-                Log.d("RoyExcel", "2");
                 Toast.makeText(this, "正在导出EXECL数据", Toast.LENGTH_SHORT).show();
                 // 查看数据
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -317,7 +315,6 @@ public class survey extends AppCompatActivity {
 
                 for (int i = 0; i < survey_log.length(); i++) {
                     try {
-                        Log.d("RoyExcel", "3");
                         JSONObject job = survey_log.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
                         searchQuery = "SELECT * FROM user WHERE _id = " + job.get("user_id").toString();
                         // Log.d("RoyExcel", searchQuery);
@@ -336,7 +333,6 @@ public class survey extends AppCompatActivity {
                             JSONArray survey_question_log = cursor2json(cursor);
 
                             for (int ii = 0; ii < survey_question_log.length(); ii++) {
-                                Log.d("RoyExcel", "4");
                                 JSONObject job1 = survey_question_log.getJSONObject(ii); // 遍历 jsonarray
                                 List<String> option_text = new ArrayList<String>();
                                 JSONArray answer = new JSONArray(job1.get("answer")
@@ -345,39 +341,42 @@ public class survey extends AppCompatActivity {
                                 // 数组，把每一个对象转成 json 对象
 
                                 for (int iii = 0; iii < answer.length(); iii++) {
-                                    Log.d("RoyExcel", "5");
                                     JSONObject job2 = answer.getJSONObject(iii);
 
                                     // 简答题
                                     if (job1.get("survey_question_id").toString().equals("9")) {
-                                        Log.d("RoyExcel", "6");
-                                        Log.d("RoyJ", job2.get("text").toString());
                                         option_text.add(job2.get("text").toString());
                                     } else {
-                                        Log.d("RoyExcel", "6");
                                         searchQuery = "SELECT * FROM survey_question_option WHERE " +
                                                 "id " +
                                                 "= " + job2.get("id");
-                                        // Log.d("RoyExcel", searchQuery);
                                         cursor = db.rawQuery(searchQuery, null);
                                         JSONArray option = cursor2json(cursor);
 
                                         if (option.length() > 0) {
-                                            Log.d("RoyExcel", "7");
                                             option_text.add(option.getJSONObject(0).get("content")
                                                     .toString() + " " + job2.get("text"));
                                         }
                                     }
                                 }
-                                Log.d("RoyExcel", "8");
                                 String a = "";
                                 for (int oi = 0; oi < option_text.size(); oi++) {
                                     a += ";" + option_text.get(oi);
                                 }
 
-                                Log.d("RoyExcel", "9");
                                 row.add(a);
-                                Log.d("RoyExcel", "10");
+                            }
+
+                            searchQuery = "SELECT * FROM survey_remark WHERE " +
+                                    "user_id " +
+                                    "= " + job.get("user_id");
+                            cursor = db.rawQuery(searchQuery, null);
+                            JSONArray remark = cursor2json(cursor);
+                            if (remark.length() > 0) {
+                                row.add(remark.getJSONObject(0).get("content")
+                                        .toString());
+                            } else {
+                                row.add("");
                             }
 
                             list.add(row);
@@ -400,7 +399,7 @@ public class survey extends AppCompatActivity {
                 searchQuery = "SELECT * FROM survey_question ORDER BY id ASC";
                 cursor = db.rawQuery(searchQuery, null);
                 JSONArray survey_question = cursor2json(cursor);
-                String[] title = {"姓名", "电话", "邮箱", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+                String[] title = {"姓名", "电话", "邮箱", "1", "2", "3", "4", "5", "6", "7", "8", "9", "remark"};
                 for (int i = 0; i < survey_question.length(); i++) {
                     JSONObject j = null;
                     try {
@@ -411,8 +410,6 @@ public class survey extends AppCompatActivity {
                     }
                 }
 
-                Log.d("RoyExcel", survey_question.toString());
-                Log.d("Roy", fileName);
                 ExcelUtils.initExcel(fileName, title);
                 ExcelUtils.writeObjListToExcel(list, fileName, this);
                 Toast.makeText(this, "导出成功", Toast.LENGTH_SHORT).show();

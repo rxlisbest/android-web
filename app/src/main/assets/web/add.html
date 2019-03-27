@@ -150,8 +150,9 @@
                 url: '/survey_log',
                 data: _this.serialize(),
                 success:function(data){
+                    window.localStorage.setItem("remark_user_id", window.localStorage.getItem("user_id"));
                     window.localStorage.removeItem("user_id");
-                    window.location.href = "/register.html";
+                    window.location.href = "/remark.html";
                 },
                 error:function(XMLHttpRequest){
                     //请求出错处理

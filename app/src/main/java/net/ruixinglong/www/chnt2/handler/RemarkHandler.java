@@ -36,13 +36,13 @@ public class RemarkHandler implements RequestHandler {
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
         Map<String, String> params = HttpRequestParser.parseParams(request);
 
-        if (!params.containsKey("content") || params.get("content").length() == 0) {
-            StringEntity stringEntity = new StringEntity("The content cannot be empty", "utf-8");
-
-            response.setStatusCode(400);
-            response.setEntity(stringEntity);
-            return;
-        }
+//        if (!params.containsKey("content") || params.get("content").length() == 0) {
+//            StringEntity stringEntity = new StringEntity("The content cannot be empty", "utf-8");
+//
+//            response.setStatusCode(400);
+//            response.setEntity(stringEntity);
+//            return;
+//        }
 
         DBHelper dbHelper = new DBHelper(this.context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();

@@ -50,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
         sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '4', '2', '2、Are you?', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
-        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '5', '2', '3、Products you are interested in\\nComponent:', '0', '1528693761', '1528693761')";
+        sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '8', '1', '3、Have you ever heard about CHINT Electric?', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
         sql = "insert into `survey_question` ( `id`, `type`, `content`, `sort`, `create_time`, `update_time`) values ( '9', '3', '4、Do you have any other comments, questions, or concerns:', '0', '1528693761', '1528693761')";
         db.execSQL(sql);
