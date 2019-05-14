@@ -46,18 +46,20 @@ html,body{
     height: 100%;
 }
 .list-body-row-item .list-body-row-item-title{
+    padding-top: 5%;
     height: 17%;
     width: 100%;
     background: #FFFFFF;
     border: 1px solid #e6e9ed;
     border-bottom: 0px;
-    display: table;
+    /*display: table;*/
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
 }
 .list-body-row-item .list-body-row-item-title p{
-    display: table-cell;
+    /*width: 50px;*/
+    /*display: table-cell;*/
     vertical-align: middle;
     text-align: center;
     color: #666666;
