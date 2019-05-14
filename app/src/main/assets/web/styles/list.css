@@ -19,6 +19,7 @@ html,body{
     width: 90%;
     background: #FFFFFF;
     height: 64%;
+    overflow-y: scroll;
 }
 .list-body-row{
     width: 100%;
@@ -34,6 +35,7 @@ html,body{
     width: 18%;
     background: #fafafa;
     margin-left: 5.6%;
+    overflow: hidden;
 }
 .list-body-row-item .list-body-row-item-image{
     height: 64%;
@@ -50,6 +52,9 @@ html,body{
     border: 1px solid #e6e9ed;
     border-bottom: 0px;
     display: table;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .list-body-row-item .list-body-row-item-title p{
     display: table-cell;

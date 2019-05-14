@@ -1,0 +1,11 @@
+[
+  [
+    {"name": "EN K01Modular Din Rail Product", "src": "/product-1/1.pdf", "cover_src": "/images/product-1/1.png"},
+    {"name": "EN K02 Moulded Case Circuit Breakers", "src": "/product-1/2.pdf", "cover_src": "/images/product-1/2.png"},
+    {"name": "EN K03 Air Circuit Breaker", "src": "/product-1/3.pdf", "cover_src": "/images/product-1/3.png"},
+    {"name": "EN K04 Motor Control & Protection-NXC", "src": "/product-1/4.pdf", "cover_src": "/images/product-1/4.png"}
+  ],
+  [
+    {"name": "Summary Advertising", "src": "/product-1/5.pdf", "cover_src": "/images/product-1/5.png"}
+  ]
+]

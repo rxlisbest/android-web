@@ -24,6 +24,9 @@
                     <a v-if="type == 'video'" v-bind:href="'video.html?src=' + vv.src">
                         <img v-bind:src="vv.cover_src" />
                     </a>
+                    <a v-else-if="type == 'pdf_list'" v-bind:href="'list.html?type=product&num=' + vv.id">
+                        <img v-bind:src="vv.cover_src" />
+                    </a>
                     <a v-else v-bind:href="'pdf.html?path=' + vv.src">
                         <img v-bind:src="vv.cover_src" />
                     </a>
@@ -41,6 +44,11 @@
                             <p>CLICK PLAY</p>
                         </div>
                     </a>
+                    <a v-else-if="type == 'pdf_list'" v-bind:href="'list.html?type=product&num=' + vv.id">
+                        <div class="list-body-row-item-go-button">
+                            <p>CLICK OPEN</p>
+                        </div>
+                    </a>
                     <a v-else v-bind:href="'pdf.html?path=' + vv.src">
                         <div class="list-body-row-item-go-button">
                             <p>CLICK OPEN</p>
@@ -51,10 +59,11 @@
             <div class="clear"></div>
         </div>
     </template>
+    <div class="clear"></div>
 </div>
 <div class="list-line"></div>
 <div class="list-footer">
-    <a href="index.html">
+    <a href="javascript:history.back(-1)">
         <div class="list-footer-return">
             <img src="/images/list/button_return.png" />
         </div>
@@ -78,6 +87,10 @@
                 init: function () {
                     var _this = this;
                     var type = GetQueryString('type');
+                    var num = GetQueryString('num') || '';
+                    if (num) {
+                        type = type + '-' + num
+                    }
                     if(type){
                         _this.type = type;
                         var url = '/data/' + type + '.json';

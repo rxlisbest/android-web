@@ -137,7 +137,8 @@ public class SurveyLogHandler implements RequestHandler {
                     }
                 } else if (resultSet.getJSONObject(i).get("type").toString().equals("1")) {
                     for (int ii = 0; ii < children.length(); ii++) {
-                        if (params.get("answer." + resultSet.getJSONObject(i).get
+                        if (params.containsKey("answer." + resultSet.getJSONObject(i).get
+                                ("id")) && params.get("answer." + resultSet.getJSONObject(i).get
                                 ("id")).toString().equals(children.getJSONObject(ii).get
                                 ("id").toString())) {
                             JSONObject answer_object = new JSONObject();

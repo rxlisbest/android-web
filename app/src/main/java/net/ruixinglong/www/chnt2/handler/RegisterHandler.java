@@ -66,6 +66,20 @@ public class RegisterHandler implements RequestHandler {
             response.setEntity(stringEntity);
             return;
         }
+        if (!params.containsKey("company") || params.get("company").length() == 0) {
+            StringEntity stringEntity = new StringEntity("The Company cannot be empty", "utf-8");
+
+            response.setStatusCode(400);
+            response.setEntity(stringEntity);
+            return;
+        }
+        if (!params.containsKey("position") || params.get("position").length() == 0) {
+            StringEntity stringEntity = new StringEntity("The Postion cannot be empty", "utf-8");
+
+            response.setStatusCode(400);
+            response.setEntity(stringEntity);
+            return;
+        }
 
         DBHelper dbHelper = new DBHelper(this.context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -74,6 +88,8 @@ public class RegisterHandler implements RequestHandler {
         user.put("name", params.get("name"));
         user.put("telephone", params.get("telephone"));
         user.put("email", params.get("email"));
+        user.put("company", params.get("company"));
+        user.put("position", params.get("position"));
         long rowid1 = db.insert("user", null, user);//返回新添记录的行号，与主键id无关
 
 

@@ -22,6 +22,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "name varchar(255)," +
                 "telephone varchar(20)," +
                 "email varchar(255)," +
+                "company varchar(255)," +
+                "position varchar(255)," +
                 "create_time BIGINT(20)," +
                 "update_time BIGINT(20)," +
                 "card TEXT)";

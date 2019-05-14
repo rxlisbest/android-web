@@ -313,6 +313,8 @@ public class user extends AppCompatActivity {
                         row.add(user.getJSONObject(i).get("name").toString());
                         row.add(user.getJSONObject(i).get("telephone").toString());
                         row.add(user.getJSONObject(i).get("email").toString());
+                        row.add(user.getJSONObject(i).get("company").toString());
+                        row.add(user.getJSONObject(i).get("position").toString());
 
                         list.add(row);
                     } catch (JSONException e) {
@@ -329,7 +331,7 @@ public class user extends AppCompatActivity {
                 String fileName = tempPath + "/Download/user_"+DateFormat.format
                         ("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA))+".xls";
 
-                String[] title = {"ID", "姓名", "电话", "邮箱"};
+                String[] title = {"ID", "姓名", "电话", "邮箱", "公司", "职位"};
 
                 ExcelUtils.initExcel(fileName, title);
                 ExcelUtils.writeObjListToExcel(list, fileName, this);

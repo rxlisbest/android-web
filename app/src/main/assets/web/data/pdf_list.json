@@ -1,0 +1,8 @@
+[
+  [
+    {"id": 1, "name": "CHINTNEXT", "src": "/pdf_list/1.pdf", "cover_src": "/images/pdf_list/1.png"},
+    {"id": 2, "name": "Low Voltage Electrical Product", "src": "/pdf_list/2.pdf", "cover_src": "/images/pdf_list/2.png"},
+    {"id": 3, "name": "Power T&D Equipment", "src": "/pdf_list/3.pdf", "cover_src": "/images/pdf_list/3.png"},
+    {"id": 4, "name": "Solutions", "src": "/pdf_list/4.pdf", "cover_src": "/images/pdf_list/4.png"}
+  ]
+]

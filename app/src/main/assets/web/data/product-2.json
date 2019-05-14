@@ -1,0 +1,29 @@
+[
+  [
+    {"name": "Air Circuit Breaker", "src": "/product-2/1.pdf", "cover_src": "/images/product-2/1.png"},
+    {"name": "Air Circuit Breaker-NXA", "src": "/product-2/2.pdf", "cover_src": "/images/product-2/2.png"},
+    {"name": "CHINT PROFILE", "src": "/product-2/3.pdf", "cover_src": "/images/product-2/3.png"},
+    {"name": "Contactoers,Relays,Starters", "src": "/product-2/4.pdf", "cover_src": "/images/product-2/4.png"}
+  ],
+  [
+    {"name": "ENB11-Master", "src": "/product-2/5.pdf", "cover_src": "/images/product-2/5.png"},
+    {"name": "Fuses,Travel Switches,Universal Change-over", "src": "/product-2/6.pdf", "cover_src": "/images/product-2/6.png"},
+    {"name": "Inverter & Soft-Starter", "src": "/product-2/7.pdf", "cover_src": "/images/product-2/7.png"},
+    {"name": "Low Voltage VT&AVR&CT&PT", "src": "/product-2/8.pdf", "cover_src": "/images/product-2/8.png"}
+  ],
+  [
+    {"name": "LV Capacitor", "src": "/product-2/9.pdf", "cover_src": "/images/product-2/9.png"},
+    {"name": "Modular Din Rail Product-NXB", "src": "/product-2/10.pdf", "cover_src": "/images/product-2/10.png"},
+    {"name": "Modular DIN Rail Products", "src": "/product-2/11.pdf", "cover_src": "/images/product-2/11.png"},
+    {"name": "Motor Control & Protection-NXC", "src": "/product-2/12.pdf", "cover_src": "/images/product-2/12.png"}
+  ],
+  [
+    {"name": "Moulded Case Circuit Breakers", "src": "/product-2/13.pdf", "cover_src": "/images/product-2/13.png"},
+    {"name": "Moulded Case Circuit Breakers-NXM", "src": "/product-2/14.pdf", "cover_src": "/images/product-2/14.png"},
+    {"name": "Pushbuttons & Indicator Lights & Buzzers", "src": "/product-2/15.pdf", "cover_src": "/images/product-2/15.png"},
+    {"name": "Relay", "src": "/product-2/16.pdf", "cover_src": "/images/product-2/16.png"}
+  ],
+  [
+    {"name": "Switch Disconnector,Fuse-switch Disconnector", "src": "/product-2/17.pdf", "cover_src": "/images/product-2/17.png"}
+  ]
+]
